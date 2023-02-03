@@ -1,3 +1,11 @@
+<?php
+require_once("../baseUrl.php");
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,10 +18,10 @@
   <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js"></script>
 
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="main.css" />
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -25,16 +33,16 @@
           <span class="sr-only">Toggle Menu</span>
         </button>
       </div>
-      <h1><a href="index.php" class="logo">Inventory</a></h1>
+      <h1><a href="<?= BASE_URL ?>../../../index.php" class="logo">Inventory</a></h1>
       <ul class="list-unstyled components mb-5">
         <li class="active">
-          <a href="index.php"> Bahan Mentah</a>
+          <a href="<?= BASE_URL ?>../../../index.php"> Bahan Mentah</a>
         </li>
         <li>
-          <a href="bahan_setengah_jadi.html"> Bahan Setengah Jadi</a>
+          <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
         </li>
         <li>
-          <a href="bahan_jadi.html"> Bahan Jadi</a>
+          <a href="bahan_jadi.php"> Bahan Jadi</a>
         </li>
       </ul>
     </nav>
