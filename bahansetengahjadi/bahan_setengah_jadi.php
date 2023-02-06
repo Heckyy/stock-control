@@ -38,10 +38,10 @@ require_once('../baseUrl.php');
           <a href="<?= BASE_URL ?>../../../index.php"> Bahan Mentah</a>
         </li>
         <li>
-          <a href="bahan_setengah_jadi.html"> Bahan Setengah Jadi</a>
+          <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
         </li>
         <li>
-          <a href="bahan_jadi.html"> Bahan Jadi</a>
+          <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
         </li>
       </ul>
     </nav>
@@ -49,6 +49,7 @@ require_once('../baseUrl.php');
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
       <h2 class="mb-4">Bahan Setengah Jadi</h2>
+      <button class="btn btn-primary mb-3" id="buat-menu">Buat Bahan</button>
       <table class="table">
         <thead>
           <tr>
@@ -78,7 +79,8 @@ require_once('../baseUrl.php');
   <script src="js/jquery.min.js"></script>
   <script src="js/popper.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+  <script src="<?= BASE_URL ?>../../../js/main.js"></script>
+  <script src="function.js"></script>
 </body>
 
 </html>
