@@ -1,11 +1,6 @@
 <?php
 require_once('../baseUrl.php');
-
-
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,12 +8,9 @@ require_once('../baseUrl.php');
   <title>Inventory</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js"></script>
-
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
-
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
