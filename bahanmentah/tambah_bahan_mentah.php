@@ -1,7 +1,7 @@
 <?php
 require_once('../baseUrl.php');
 require_once('../function/database.php');
-$db = new Database();
+// $db = new Database();
 ?>
 <!DOCTYPE html>
 <html lang="en">
