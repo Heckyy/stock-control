@@ -19,7 +19,20 @@ class Database
     public function insert($query)
     {
         $result = mysqli_query($this->conn, $query);
-        return $result;
+        if ($result) {
+            return "Anda Berhasil Memasukan Data";
+        } else {
+            return "Data Gagal Di Masukan!";
+        }
+    }
+    public function update($query)
+    {
+        $result = mysqli_query($this->conn, $query);
+        if ($result) {
+            return "Anda Berhasil Update Data!";
+        } else {
+            return "Update Data Gagal !";
+        }
     }
     public function selectAll($query)
     {

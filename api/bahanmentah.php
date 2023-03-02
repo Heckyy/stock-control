@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../function/database.php";
 $db = new Database();
 
-$query_get_data = "SELECT * from tb_bahan_mentah";
+$query_get_data = "SELECT * from tb_bahan_mentah order by purchase_date DESC";
 $result = $db->selectAll($query_get_data);
 $final_result = mysqli_fetch_assoc($result);
 
@@ -17,7 +17,7 @@ foreach ($result as $data) {
         $qty = $data['qty'],
         $unit = $data['unit'],
         $cost = $data['cost'],
-        $cost_unit = $data['qty'],
+        $cost_unit = $data['cost_unit'],
 
 
     ];

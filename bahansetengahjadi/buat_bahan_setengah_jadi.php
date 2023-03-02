@@ -2,7 +2,13 @@
 require_once('../baseUrl.php');
 require_once('../function/database.php');
 $db = new Database();
+$query_get_data = "select distinct (item) from  tb_bahan_mentah";
+$get_bahan_mentah = $db->selectAll($query_get_data);
+$date = new DateTime();
+$real_date = $date->format("d-m-Y");
+// echo $real_date;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +21,9 @@ $db = new Database();
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="style.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -29,13 +38,16 @@ $db = new Database();
             <h1><a href="index.html" class="logo">Inventory</a></h1>
             <ul class="list-unstyled components mb-5">
                 <li class="active">
-                    <a href="<?= BASE_URL ?>../../../index.php"> Bahan Mentah</a>
+                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                </li>
+                <li>
+                    <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
                 </li>
             </ul>
         </nav>
@@ -68,12 +80,12 @@ $db = new Database();
 								<input type="date" name="tanggal" id="tanggal"  class="form-control square">
 							</div> -->
                         <div class="col-sm-2 col-lg-2">
-                            <input type="date" name="tanggal" id="tanggal" class="form-control square" required="required">
+                            <input type="date" name="tanggal" id="tanggal" class="form-control square" required="required" disabled="disabled" value="<?php echo date('Y-m-d') ?>">
                         </div>
                     </div>
                     <div class="space_line row mt-3">
                         <div class="col-sm-2 col-lg-2">
-                            Nama Item
+                            Item Name
                         </div>
                         <div class="col-sm-2 col-lg-3">
                             <div class="form-group">
@@ -84,21 +96,17 @@ $db = new Database();
                     </div>
                     <div class="space_line row">
                         <div class="col-sm-2 col-lg-2">
-                            Item <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
+                            Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
                         </div>
                         <div class="col-sm-3 col-lg-3">
-                            <select id="item" name="item" class="choices form-select square bg-white" required="required">
-                                <option value="">Select</option>
+                            <select class="js-select2" name="item" style="width: 250px;">
                                 <?php
-                                foreach ($item as $key => $i) {
-                                ?>
-                                    <option value="<?php echo $i['id_item']; ?>">
-                                        <?php echo $i['item']; ?>
-                                    </option>
-                                <?php
-                                }
-                                ?>
+                                foreach ($get_bahan_mentah as $data) { ?>
+
+                                    <option value="Apel"><?= $data['item'] ?></option>
+                                <?php } ?>
                             </select>
+
                         </div>
                         <div class="col-sm-1 col-lg-1" align="right">
                             Qty
@@ -124,11 +132,11 @@ $db = new Database();
                     <thead>
                         <tr>
                             <td width="50px" align="center">No</td>
-                            <td width="250px">Item</td>
-                            <td width="200px">Price</td>
-                            <td>Total</td>
-                            <td width="200px">Total</td>
-                            <td width="150px" align="center">Aksi</td>
+                            <td width="250px" class="text-center">Item</td>
+                            <td width="200px" class="text-center">Reference Cost</td>
+                            <td class="text-center">Average Cost</td>
+                            <td width="200px" class="text-center">Last Buy Cost</td>
+                            <td width="150px" class="text-center" align="center">Aksi</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,6 +155,12 @@ $db = new Database();
     <script src="js/bootstrap.min.js"></script>
     <script src="<?= BASE_URL ?>../../../js/main.js"></script>
     <script src="function.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.js-select2').select2();
+        });
+    </script>
 </body>
 
 </html>

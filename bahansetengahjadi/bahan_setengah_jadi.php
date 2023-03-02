@@ -27,13 +27,16 @@ require_once('../baseUrl.php');
       <h1><a href="index.html" class="logo">Inventory</a></h1>
       <ul class="list-unstyled components mb-5">
         <li class="active">
-          <a href="<?= BASE_URL ?>../../../index.php"> Bahan Mentah</a>
+          <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
         </li>
         <li>
           <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
         </li>
         <li>
           <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+        </li>
+        <li>
+          <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
         </li>
       </ul>
     </nav>

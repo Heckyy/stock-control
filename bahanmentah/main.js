@@ -13,14 +13,14 @@ $(document).ready(function () {
         if (result.length) {
           $.each(result, function (index, value) {
             html += "<tr>";
-            html += "<td>" + no + "</td>";
-            html += "<td>" + value[0] + "</td>";
-            html += "<td>" + value[1] + "</td>";
-            html += "<td>" + value[2] + "</td>";
-            html += "<td>" + value[3] + "</td>";
-            html += "<td>" + value[4] + "</td>";
-            html += "<td>" + value[5] + "</td>";
-            html += "<td>" + value[6] + "</td>";
+            html += "<td class='text-center'>" + no + "</td>";
+            html += "<td class='text-center'>" + value[0] + "</td>";
+            html += "<td class='text-center'>" + value[1] + "</td>";
+            html += "<td class='text-center'>" + value[2] + "</td>";
+            html += "<td class='text-center'>" + value[3] + "</td>";
+            html += "<td class='text-center'>" + value[4] + "</td>";
+            html += "<td class='text-center'>" + value[5] + "</td>";
+            html += "<td class='text-center'>" + value[6] + "</td>";
 
             html += "</tr>";
             no++;
@@ -36,4 +36,40 @@ $(document).ready(function () {
   }
 
   getData();
+  var periode3 = localStorage.getItem("periode");
+  $("#last-cogs").html(periode3);
+
+  $("#update-cogs").click(function (e) {
+    const date = new Date();
+    const date_month = date.getMonth() + 1;
+    const date_year = date.getFullYear();
+    var periode = date_month + "/" + date_year;
+    var data = {
+      periode: periode,
+    };
+    // alert(periode);
+    $.ajax({
+      type: "POST",
+      url: "http://localhost/stock/api/updatecogs.php",
+      data: data,
+
+      success: function (response) {
+        alert(response);
+        const date2 = new Date();
+        const date_month2 = date.getMonth() + 1;
+        const date_year2 = date.getFullYear();
+        const date_day = date.getDate();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
+        const time = hour + ":" + minutes;
+        var periode2 =
+          date_day + "/" + date_month2 + "/" + date_year2 + " " + time;
+        localStorage.setItem("periode", periode2);
+        $("#last-cogs").html(periode2);
+      },
+    });
+  });
+  function download() {
+    window.location.href = "template-raw-materlas.xlsx";
+  }
 });
