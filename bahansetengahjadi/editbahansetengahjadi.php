@@ -2,30 +2,36 @@
 require_once('../baseUrl.php');
 require_once('../function/database.php');
 $db = new Database();
+$code_item  = $_GET['data'];
 $query_get_data = "select distinct item, code_item from  tb_bahan_mentah";
 $get_bahan_mentah = $db->selectAll($query_get_data);
-// $result_get_data = mysqli_fetch_assoc($get_bahan_mentah);
-$date = new DateTime();
-$real_date = $date->format("d-m-Y");
-$number_code = 1;
-// echo $real_date;
 
+// !Get Nama Item
+$query_get_name_item = "SELECT * from tb_bahan_mentah where code_item='" . $code_item . "' limit 1";
+$get_name_item = mysqli_fetch_assoc($db->selectAll($query_get_name_item));
+$item = $get_name_item['item'];
 
-// ! Create Code Item For Semi Good Materials
+// ! GET DATA INGREDIENTS SEMI GOOD MATERIAL FROM tb_bahan_sj
 
-$query_get_code_item = "SELECT * from tb_bahan_mentah where code_item like '%BSJ%' order by code_item DESC limit 1";
-$get_code_item = $db->selectAll($query_get_code_item);
-$result_code_item_bsj = mysqli_fetch_assoc($get_code_item);
-if (mysqli_num_rows($get_code_item) > 0) {
-    $code_item_bsj = $result_code_item_bsj['code_item'];
-    $last_number = ltrim($code_item_bsj, "BSJ0");
-    $new_number = $last_number + 1;
-    $code_item_bsj = "BSJ" . str_pad($new_number, 10, 0, STR_PAD_LEFT);
-    // var_dump($code_item_bsj);
-    // die();
-} else {
-    $code_item_bsj = "BSJ" . str_pad($number_code, 10, 0, STR_PAD_LEFT);
+$query_get_data = "SELECT * from tb_bahan_sj where code_item='" . $code_item . "'";
+$get_data = $db->selectAll($query_get_data);
+foreach ($get_data as $data) {
+    $code_bahan = $data['code_bahan'];
+        // ! GET NAME RAW MATERIALS
+
+        // $query_get_bm = "SELECT * from tb_bahan_mentah";
+    ;
 }
+// var_dump($result);
+
+$query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit  FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
+// $get_data_bm = mysqli_fetch_assoc($db->selectAll($query_get_bm));
+$get_data_bm = $db->selectAll($query_get_bm);
+// foreach ($get_data_bm as $data) {
+//     var_dump($data);
+// }
+
+// 
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +45,8 @@ if (mysqli_num_rows($get_code_item) > 0) {
     <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/main.css" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -90,7 +97,7 @@ if (mysqli_num_rows($get_code_item) > 0) {
                             Kode Item
                         </div>
                         <div class="col-sm-2 col-lg-3">
-                            <input type="text" name="number" id="number" class="form-control square" required="required" disabled="disabled" value="<?= $code_item_bsj; ?>">
+                            <input type="text" name="number" id="number" class="form-control square" required="required" disabled="disabled" value="<?= $code_item; ?>">
                         </div>
                         <div class="col-sm-2 col-lg-2" align="right">
                             Tanggal
@@ -108,17 +115,17 @@ if (mysqli_num_rows($get_code_item) > 0) {
                         </div>
                         <div class="col-sm-2 col-lg-3">
                             <div class="form-group">
-                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required">
+                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $item; ?> " disabled="disabled">
                             </div>
 
                         </div>
                     </div>
-                    <div class="space_line row">
+                    <div class=" space_line row">
                         <div class="col-sm-2 col-lg-2">
                             Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
                         </div>
                         <div class="col-sm-3 col-lg-3">
-                            <select onchange="getItem();" class="js-select2" name="item" style="width: 205px;" id="item">
+                            <select onchange="getItem();" class="js-select2" name="item" style="width: 208px;" id="item">
                                 <option value="null">Select</option>
                                 <?php
                                 foreach ($get_bahan_mentah as $data) { ?>
@@ -153,16 +160,26 @@ if (mysqli_num_rows($get_code_item) > 0) {
                         <tr>
                             <td width="50px" align="center">No</td>
                             <td width="250px" class="text-center">Item</td>
+                            <td width="100px" class="text-center">Qty</td>
+                            <td width="100px" class="text-center">Unit</td>
                             <td width="200px" class="text-center">Reference Cost</td>
-                            <td class="text-center">Average Cost</td>
+                            <td class="text-center" width="150px">Average Cost</td>
                             <td width="200px" class="text-center">Last Buy Cost</td>
-                            <td width="150px" class="text-center" align="center">Aksi</td>
+                            <td width="50px" class="text-center" align="center">Action</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td colspan="6">Data not found!</td>
-                        </tr>
+                        <?php $no = 1;
+                        foreach ($get_data_bm as $data_bm) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no; ?></td>
+                                <td class="text-center"><?= $data_bm['item']; ?></td>
+                                <td class="text-center"><?= $data_bm['qty']; ?></td>
+                                <td class="text-center"><?= $data_bm['unit']; ?></td>
+                            </tr>
+                        <?php $no++;
+                        endforeach;
+                        ?>
                     </tbody>
                 </table>
             </div>

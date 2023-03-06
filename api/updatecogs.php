@@ -28,7 +28,7 @@ foreach ($get_data_code_bm  as $data) {
 
 
     //! Query GET Last Buy Cost Unit !
-    $query_get_lastbuy_cost_item_unit = "SELECT cost as last_buy_cost_unit FROM `tb_bahan_mentah` where code_item = '" . $code_item . "' ORDER BY purchase_date DESC limit 1";
+    $query_get_lastbuy_cost_item_unit = "SELECT cost_unit as last_buy_cost_unit FROM `tb_bahan_mentah` where code_item = '" . $code_item . "' ORDER BY purchase_date DESC limit 1";
     $get_data_lastbuy_item_unit = $db->selectAll($query_get_lastbuy_cost_item_unit);
     $result_lastbuy_item_unit = mysqli_fetch_assoc($get_data_lastbuy_item_unit);
     $last_buy_cost_unit = $result_lastbuy_item_unit['last_buy_cost_unit'];

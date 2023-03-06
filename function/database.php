@@ -9,11 +9,11 @@ class Database
     public function __construct()
     {
         $this->conn = mysqli_connect($this->host, $this->username, $this->db_password, $this->db_name);
-        // if ($this->conn) {
-        //     echo "koneksi berhasil";
-        //     // $hasil = "Koneksi Berhasil";
-        //     // return $hasil;
-        // }
+        //     if ($this->conn) {
+        //         echo "koneksi berhasil";
+        //         // $hasil = "Koneksi Berhasil";
+        //         // return $hasil;
+        //     }
     }
 
     public function insert($query)

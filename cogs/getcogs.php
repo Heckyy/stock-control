@@ -10,7 +10,7 @@ $db = new Database();
 
 // ! Get Data COGS raw materials, semi good materials and good materials!
 
-$query_get_data = "SELECT tb_bahan_mentah.code_item as code_item, tb_bahan_mentah.item as nama_item , tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost as reference_cost,tb_cogs_bm.average_cost as average_cost, tb_cogs_bm.last_buy_cost as last_buy_cost FROM `tb_bahan_mentah` JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item ";
+$query_get_data = "SELECT distinct tb_bahan_mentah.code_item as code_item, tb_bahan_mentah.item as nama_item , tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost as reference_cost,tb_cogs_bm.average_cost as average_cost, tb_cogs_bm.last_buy_cost as last_buy_cost FROM `tb_bahan_mentah` JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item ";
 
 $result_data = $db->selectAll($query_get_data);
 
