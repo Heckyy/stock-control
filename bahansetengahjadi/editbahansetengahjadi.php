@@ -1,10 +1,13 @@
 <?php
 require_once('../baseUrl.php');
 require_once('../function/database.php');
+require_once('../function/rupiah.php');
 $db = new Database();
+$rp = new Rupiah();
 $code_item  = $_GET['data'];
 $query_get_data = "select distinct item, code_item from  tb_bahan_mentah";
 $get_bahan_mentah = $db->selectAll($query_get_data);
+
 
 // !Get Nama Item
 $query_get_name_item = "SELECT * from tb_bahan_mentah where code_item='" . $code_item . "' limit 1";
@@ -24,7 +27,9 @@ foreach ($get_data as $data) {
 }
 // var_dump($result);
 
-$query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit  FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
+// SELECT DISTINCT tb_bahan_sj.code_item AS code_item,tb_bahan_sj.code_bahan as code_bahan ,tb_bahan_sj.qty as qty,tb_bahan_mentah.item as item,tb_bahan_mentah.unit as unit , tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost , tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_sj` JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm ON tb_bahan_sj.code_bahan = tb_cogs_bm.code_item WHERE tb_bahan_sj.code_item = "BSJ0000000001";
+
+$query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item AS code_item,tb_bahan_sj.code_bahan as code_bahan ,tb_bahan_sj.qty as qty,tb_bahan_mentah.item as item,tb_bahan_mentah.unit as unit , tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost , tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_sj` JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm ON tb_bahan_sj.code_bahan = tb_cogs_bm.code_item WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
 // $get_data_bm = mysqli_fetch_assoc($db->selectAll($query_get_bm));
 $get_data_bm = $db->selectAll($query_get_bm);
 // foreach ($get_data_bm as $data) {
@@ -47,6 +52,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -170,18 +176,46 @@ $get_data_bm = $db->selectAll($query_get_bm);
                     </thead>
                     <tbody>
                         <?php $no = 1;
-                        foreach ($get_data_bm as $data_bm) : ?>
+                        foreach ($get_data_bm as $data_bm) :
+                            $reference_cost = $data_bm['qty'] * $data_bm['reference_cost'];
+                            $average_cost = $data_bm['qty'] * $data_bm['average_cost'];
+                            $lastbuy_cost = $data_bm['qty'] * $data_bm['lastbuy_cost'];
+                            $total_reference_cost += $reference_cost;
+                            $total_average_cost += $reference_cost;
+                            $total_lastbuy_cost += $reference_cost;
+                        ?>
                             <tr>
                                 <td class="text-center"><?= $no; ?></td>
                                 <td class="text-center"><?= $data_bm['item']; ?></td>
                                 <td class="text-center"><?= $data_bm['qty']; ?></td>
                                 <td class="text-center"><?= $data_bm['unit']; ?></td>
+                                <td class="text-center"><?= $rp->format($reference_cost); ?></td>
+                                <td class="text-center"><?= $rp->format($average_cost); ?></td>
+                                <td class="text-center"><?= $rp->format($lastbuy_cost); ?></td>
+                                <td class="text-center"><button style="background-color: transparent; border:none;"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
                         <?php $no++;
+
                         endforeach;
                         ?>
+                        <tr>
+                            <td width="350px"><b>Total : </b> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td id="reference_cost" class="text-center"><b><?= $rp->format($total_reference_cost); ?></b></td>
+                            <td id="average_cost" class="text-center"><b><?= $rp->format($total_average_cost); ?></b></td>
+                            <td id="lastbuy_cost" class="text-center"><b><?= $rp->format($total_lastbuy_cost); ?></b></td>
+
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="mt-4">
+                <div class="row">
+                    <div class="col-lg-12 bg-danger"><button id="save-menu" class="btn btn-primary w-100">Save Menu</button></div>
+                </div>
             </div>
         </div>
         <div id="pagination-container"></div>

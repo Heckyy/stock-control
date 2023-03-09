@@ -65,3 +65,43 @@ function capitalizeWords(str) {
   // Gabungkan kembali array menjadi string
   return capitalizedWords.join(" ");
 }
+
+var btnSave = document.getElementById("save-menu");
+btnSave.addEventListener("click", function () {
+  var code_bsj = document.getElementById("number").value;
+  var reference_cost = document.getElementById("reference_cost").innerHTML;
+  var average_cost = document.getElementById("average_cost").innerHTML;
+  var lastbuy_cost = document.getElementById("lastbuy_cost").innerHTML;
+  reference_cost = removeTag(reference_cost);
+  reference_cost = removeRp(reference_cost);
+  average_cost = removeTag(reference_cost);
+  average_cost = removeRp(reference_cost);
+  lastbuy_cost = removeTag(reference_cost);
+  lastbuy_cost = removeRp(reference_cost);
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost/stock/api/insertbahansj.php",
+    data: "data",
+    success: function (response) {
+      alert(response);
+      window.location.href =
+        "http://localhost/stock/bahansetengahjadi/bahan_setengah_jadi.php";
+    },
+  });
+});
+
+function removeTag(string) {
+  // Menghapus tag HTML
+  var withoutHTML = string.replace(/(<([^>]+)>)/gi, "");
+  return withoutHTML;
+}
+function removeRp(str) {
+  // Menghapus "Rp"
+  str = str.replace("Rp", "");
+
+  // Menghapus "."
+  str = str.replace(/\./g, "");
+
+  return str;
+}
