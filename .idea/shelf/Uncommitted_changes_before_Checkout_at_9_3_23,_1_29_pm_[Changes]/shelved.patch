@@ -1,0 +1,474 @@
+Index: bahansetengahjadi/editbahansetengahjadi.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\nrequire_once('../baseUrl.php');\nrequire_once('../function/database.php');\n$db = new Database();\n$code_item  = $_GET['data'];\n$query_get_data = \"select distinct item, code_item from  tb_bahan_mentah\";\n$get_bahan_mentah = $db->selectAll($query_get_data);\n\n// !Get Nama Item\n$query_get_name_item = \"SELECT * from tb_bahan_mentah where code_item='\" . $code_item . \"' limit 1\";\n$get_name_item = mysqli_fetch_assoc($db->selectAll($query_get_name_item));\n$item = $get_name_item['item'];\n\n// ! GET DATA INGREDIENTS SEMI GOOD MATERIAL FROM tb_bahan_sj\n\n$query_get_data = \"SELECT * from tb_bahan_sj where code_item='\" . $code_item . \"'\";\n$get_data = $db->selectAll($query_get_data);\nforeach ($get_data as $data) {\n    $code_bahan = $data['code_bahan'];\n        // ! GET NAME RAW MATERIALS\n\n        // $query_get_bm = \"SELECT * from tb_bahan_mentah\";\n    ;\n}\n// var_dump($result);\n\n$query_get_bm = \"SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit  FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item WHERE tb_bahan_sj.code_item = '\" . $code_item . \"'\";\n// $get_data_bm = mysqli_fetch_assoc($db->selectAll($query_get_bm));\n$get_data_bm = $db->selectAll($query_get_bm);\n// foreach ($get_data_bm as $data) {\n//     var_dump($data);\n// }\n\n// \n?>\n\n<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <title>Inventory</title>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\n    <script src=\"https://code.jquery.com/jquery-3.6.0.min.js\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js\"></script>\n    <link href=\"https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900\" rel=\"stylesheet\" />\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\" />\n    <link rel=\"stylesheet\" href=\"../css/style.css\" />\n    <link rel=\"stylesheet\" href=\"../css/main.css\" />\n\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css\" />\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>\n</head>\n\n<body>\n    <div class=\"wrapper d-flex align-items-stretch\">\n        <nav id=\"sidebar\">\n            <div class=\"custom-menu\">\n                <button type=\"button\" id=\"sidebarCollapse\" class=\"btn btn-primary\">\n                    <i class=\"fa fa-bars\"></i>\n                    <span class=\"sr-only\">Toggle Menu</span>\n                </button>\n            </div>\n            <h1><a href=\"index.html\" class=\"logo\">Inventory</a></h1>\n            <ul class=\"list-unstyled components mb-5\">\n                <li class=\"active\">\n                    <a href=\"<?= BASE_URL ?>../../../bahanmentah.php\"> Bahan Mentah</a>\n                </li>\n                <li>\n                    <a href=\"<?= BASE_URL ?>../../bahan_setengah_jadi.php\"> Bahan Setengah Jadi</a>\n                </li>\n                <li>\n                    <a href=\"<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php\"> Bahan Jadi</a>\n                </li>\n                <li>\n                    <a href=\"<?= BASE_URL ?>../../../index.php\"> COGS</a>\n                </li>\n            </ul>\n        </nav>\n        <!-- Page Content  -->\n        <div id=\"content\" class=\"p-4 p-md-5 pt-5\">\n            <div class=\"app-card-header p-3 main-content container-fluid \">\n                <div class=\"row justify-content-between align-items-center line\">\n                    <div class=\"col-auto\">\n                        <h4 class=\"app-card-title\">\n                            Buat Barang Setengah Jadi\n                        </h4>\n                    </div>\n                </div>\n                <hr style=\"height: 2px; border: none; color: black; background-color: black;\">\n            </div>\n\n            <div class=\"app-card-body pb-3 main-content container-fluid\">\n                <form method=\"POST\" id=\"new\">\n                    <div class=\"space_line row\">\n                        <div class=\"col-sm-2 col-lg-2\">\n                            Kode Item\n                        </div>\n                        <div class=\"col-sm-2 col-lg-3\">\n                            <input type=\"text\" name=\"number\" id=\"number\" class=\"form-control square\" required=\"required\" disabled=\"disabled\" value=\"<?= $code_item; ?>\">\n                        </div>\n                        <div class=\"col-sm-2 col-lg-2\" align=\"right\">\n                            Tanggal\n                        </div>\n                        <!-- <div class=\"col-sm-2 col-lg-2\">\n\t\t\t\t\t\t\t\t<input type=\"date\" name=\"tanggal\" id=\"tanggal\"  class=\"form-control square\">\n\t\t\t\t\t\t\t</div> -->\n                        <div class=\"col-sm-2 col-lg-2\">\n                            <input type=\"date\" name=\"tanggal\" id=\"tanggal\" class=\"form-control square\" required=\"required\" disabled=\"disabled\" value=\"<?php echo date('Y-m-d') ?>\">\n                        </div>\n                    </div>\n                    <div class=\"space_line row mt-3\">\n                        <div class=\"col-sm-2 col-lg-2\">\n                            Item Name\n                        </div>\n                        <div class=\"col-sm-2 col-lg-3\">\n                            <div class=\"form-group\">\n                                <input type=\"text\" class=\"form-control\" style=\"border:thin solid black\" id=\"name_item\" aria-describedby=\"emailHelp\" autocomplete=\"off\" required=\"required\" value=\"<?php echo $item; ?> \" disabled=\"disabled\">\n                            </div>\n\n                        </div>\n                    </div>\n                    <div class=\" space_line row\">\n                        <div class=\"col-sm-2 col-lg-2\">\n                            Ingredients <a href=\"#\" data-bs-toggle=\"modal\" data-bs-target=\"#tambah_barang\"><i class=\"bi bi-plus-circle\"></i></a>\n                        </div>\n                        <div class=\"col-sm-3 col-lg-3\">\n                            <select onchange=\"getItem();\" class=\"js-select2\" name=\"item\" style=\"width: 208px;\" id=\"item\">\n                                <option value=\"null\">Select</option>\n                                <?php\n                                foreach ($get_bahan_mentah as $data) { ?>\n\n                                    <option value=\"<?= $data['code_item'] ?>\"><?= $data['item'] ?></option>\n                                <?php } ?>\n                            </select>\n\n                        </div>\n                        <div class=\"col-sm-1 col-lg-1\" align=\"right\">\n                            Qty\n                        </div>\n                        <div class=\"col-sm-2 col-lg-2\">\n                            <input type=\"number\" name=\"qty\" id=\"qty\" min=\"1\" class=\"form-control square\" required=\"required\" style=\"border:1px solid black;\">\n                        </div>\n                        <div class=\"col-sm-1 col-lg-1\" align=\"right\">\n                            Unit\n                        </div>\n                        <div class=\"col-sm-2 col-lg-2\" style=\"width: 75px;\">\n                            <input type=\"text\" name=\"unit\" id=\"unit\" class=\"form-control square\" required=\"required\" style=\"border:1px solid black;\" disabled=\"disabled\">\n                        </div>\n                    </div>\n                    <div class=\"space_line row mt-3\">\n                        <div class=\"col-lg-12\">\n                            <button type=\"submit\" id=\"save\" class=\"btn btn-sm btn-success btn-custom\">Add Ingredient</button>\n                        </div>\n                    </div>\n                </form>\n\n                <table class=\"table mb-0 mt-5\">\n                    <thead>\n                        <tr>\n                            <td width=\"50px\" align=\"center\">No</td>\n                            <td width=\"250px\" class=\"text-center\">Item</td>\n                            <td width=\"100px\" class=\"text-center\">Qty</td>\n                            <td width=\"100px\" class=\"text-center\">Unit</td>\n                            <td width=\"200px\" class=\"text-center\">Reference Cost</td>\n                            <td class=\"text-center\" width=\"150px\">Average Cost</td>\n                            <td width=\"200px\" class=\"text-center\">Last Buy Cost</td>\n                            <td width=\"50px\" class=\"text-center\" align=\"center\">Action</td>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <?php $no = 1;\n                        foreach ($get_data_bm as $data_bm) : ?>\n                            <tr>\n                                <td class=\"text-center\"><?= $no; ?></td>\n                                <td class=\"text-center\"><?= $data_bm['item']; ?></td>\n                                <td class=\"text-center\"><?= $data_bm['qty']; ?></td>\n                                <td class=\"text-center\"><?= $data_bm['unit']; ?></td>\n                            </tr>\n                        <?php $no++;\n                        endforeach;\n                        ?>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <div id=\"pagination-container\"></div>\n    </div>\n\n    <script src=\"js/jquery.min.js\"></script>\n    <script src=\"js/popper.js\"></script>\n    <script src=\"js/bootstrap.min.js\"></script>\n    <script src=\"<?= BASE_URL ?>../../../js/main.js\"></script>\n    <script src=\"function.js\"></script>\n    <script src=\"main.js\"></script>\n\n    <script>\n        $(document).ready(function() {\n            $('.js-select2').select2();\n        });\n    </script>\n</body>\n\n</html>
+===================================================================
+diff --git a/bahansetengahjadi/editbahansetengahjadi.php b/bahansetengahjadi/editbahansetengahjadi.php
+--- a/bahansetengahjadi/editbahansetengahjadi.php	
++++ b/bahansetengahjadi/editbahansetengahjadi.php	
+@@ -2,7 +2,7 @@
+ require_once('../baseUrl.php');
+ require_once('../function/database.php');
+ $db = new Database();
+-$code_item  = $_GET['data'];
++$code_item = $_GET['data'];
+ $query_get_data = "select distinct item, code_item from  tb_bahan_mentah";
+ $get_bahan_mentah = $db->selectAll($query_get_data);
+ 
+@@ -17,16 +17,21 @@
+ $get_data = $db->selectAll($query_get_data);
+ foreach ($get_data as $data) {
+     $code_bahan = $data['code_bahan'];
+-        // ! GET NAME RAW MATERIALS
++    // ! GET NAME RAW MATERIALS
+ 
+-        // $query_get_bm = "SELECT * from tb_bahan_mentah";
++    // $query_get_bm = "SELECT * from tb_bahan_mentah";
+     ;
+ }
+ // var_dump($result);
+ 
+-$query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit  FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
++// SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_mentah.code_item as code_item_bm, tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit,tb_cogs_bm.reference_cost as reference_cost,tb_cogs_bm.average_cost_unit AS average_cost, tb_cogs_bm.last_buy_unit as last_buy_cost FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm on tb_bahan_mentah.code_item = tb_cogs_bm.code_item  WHERE tb_bahan_sj.code_item = "BSJ0000000001";
++
++// $query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_mentah.code_item as code_item_bm, tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit  FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
++
++$query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item as code_item , tb_bahan_mentah.code_item as code_item_bm, tb_bahan_sj.qty , tb_bahan_sj.code_bahan ,tb_bahan_mentah.item,tb_bahan_mentah.unit,tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit AS average_cost, tb_cogs_bm.last_buy_unit as last_buy_cost FROM `tb_bahan_sj`JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm on tb_bahan_mentah.code_item = tb_cogs_bm.code_item  WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
+ // $get_data_bm = mysqli_fetch_assoc($db->selectAll($query_get_bm));
+ $get_data_bm = $db->selectAll($query_get_bm);
++// 
+ // foreach ($get_data_bm as $data) {
+ //     var_dump($data);
+ // }
+@@ -39,166 +44,222 @@
+ 
+ <head>
+     <title>Inventory</title>
+-    <meta charset="utf-8" />
+-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
++    <meta charset="utf-8"/>
++    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js"></script>
+-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
+-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+-    <link rel="stylesheet" href="../css/style.css" />
+-    <link rel="stylesheet" href="../css/main.css" />
++    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet"/>
++    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
++    <link rel="stylesheet" href="../css/style.css"/>
++    <link rel="stylesheet" href="../css/main.css"/>
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
++          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
++          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+ 
+-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+ </head>
+ 
+ <body>
+-    <div class="wrapper d-flex align-items-stretch">
+-        <nav id="sidebar">
+-            <div class="custom-menu">
+-                <button type="button" id="sidebarCollapse" class="btn btn-primary">
+-                    <i class="fa fa-bars"></i>
+-                    <span class="sr-only">Toggle Menu</span>
+-                </button>
+-            </div>
+-            <h1><a href="index.html" class="logo">Inventory</a></h1>
+-            <ul class="list-unstyled components mb-5">
+-                <li class="active">
+-                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
+-                </li>
+-                <li>
+-                    <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+-                </li>
+-                <li>
+-                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+-                </li>
+-                <li>
+-                    <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
+-                </li>
+-            </ul>
+-        </nav>
+-        <!-- Page Content  -->
+-        <div id="content" class="p-4 p-md-5 pt-5">
+-            <div class="app-card-header p-3 main-content container-fluid ">
+-                <div class="row justify-content-between align-items-center line">
+-                    <div class="col-auto">
+-                        <h4 class="app-card-title">
+-                            Buat Barang Setengah Jadi
+-                        </h4>
+-                    </div>
+-                </div>
+-                <hr style="height: 2px; border: none; color: black; background-color: black;">
+-            </div>
++<div class="wrapper d-flex align-items-stretch">
++    <nav id="sidebar">
++        <div class="custom-menu">
++            <button type="button" id="sidebarCollapse" class="btn btn-primary">
++                <i class="fa fa-bars"></i>
++                <span class="sr-only">Toggle Menu</span>
++            </button>
++        </div>
++        <h1><a href="index.html" class="logo">Inventory</a></h1>
++        <ul class="list-unstyled components mb-5">
++            <li class="active">
++                <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
++            </li>
++            <li>
++                <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
++            </li>
++            <li>
++                <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
++            </li>
++            <li>
++                <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
++            </li>
++        </ul>
++    </nav>
++    <!-- Page Content  -->
++    <div id="content" class="p-4 p-md-5 pt-5">
++        <div class="app-card-header p-3 main-content container-fluid ">
++            <div class="row justify-content-between align-items-center line">
++                <div class="col-auto">
++                    <h4 class="app-card-title">
++                        Buat Barang Setengah Jadi
++                    </h4>
++                </div>
++            </div>
++            <hr style="height: 2px; border: none; color: black; background-color: black;">
++        </div>
+ 
+-            <div class="app-card-body pb-3 main-content container-fluid">
+-                <form method="POST" id="new">
+-                    <div class="space_line row">
+-                        <div class="col-sm-2 col-lg-2">
+-                            Kode Item
+-                        </div>
+-                        <div class="col-sm-2 col-lg-3">
+-                            <input type="text" name="number" id="number" class="form-control square" required="required" disabled="disabled" value="<?= $code_item; ?>">
+-                        </div>
+-                        <div class="col-sm-2 col-lg-2" align="right">
+-                            Tanggal
+-                        </div>
+-                        <!-- <div class="col-sm-2 col-lg-2">
+-								<input type="date" name="tanggal" id="tanggal"  class="form-control square">
+-							</div> -->
+-                        <div class="col-sm-2 col-lg-2">
+-                            <input type="date" name="tanggal" id="tanggal" class="form-control square" required="required" disabled="disabled" value="<?php echo date('Y-m-d') ?>">
+-                        </div>
+-                    </div>
+-                    <div class="space_line row mt-3">
+-                        <div class="col-sm-2 col-lg-2">
+-                            Item Name
+-                        </div>
+-                        <div class="col-sm-2 col-lg-3">
+-                            <div class="form-group">
+-                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $item; ?> " disabled="disabled">
+-                            </div>
++        <div class="app-card-body pb-3 main-content container-fluid">
++            <form method="POST" id="new">
++                <div class="space_line row">
++                    <div class="col-sm-2 col-lg-2">
++                        Kode Item
++                    </div>
++                    <div class="col-sm-2 col-lg-3">
++                        <input type="text" name="number" id="code_item" class="form-control square" required="required"
++                               disabled="disabled" value="<?= $code_item; ?>">
++                    </div>
++                    <div class="col-sm-2 col-lg-2" align="right">
++                        Tanggal
++                    </div>
++                    <!-- <div class="col-sm-2 col-lg-2">
++                            <input type="date" name="tanggal" id="tanggal"  class="form-control square">
++                        </div> -->
++                    <div class="col-sm-2 col-lg-2">
++                        <input type="date" name="tanggal" id="tanggal" class="form-control square" required="required"
++                               disabled="disabled" value="<?php echo date('Y-m-d') ?>">
++                    </div>
++                </div>
++                <div class="space_line row mt-3">
++                    <div class="col-sm-2 col-lg-2">
++                        Item Name
++                    </div>
++                    <div class="col-sm-2 col-lg-3">
++                        <div class="form-group">
++                            <input type="text" class="form-control" style="border:thin solid black" id="name_item"
++                                   aria-describedby="emailHelp" autocomplete="off" required="required"
++                                   value="<?php echo $item; ?> " disabled="disabled">
++                        </div>
+ 
+-                        </div>
+-                    </div>
+-                    <div class=" space_line row">
+-                        <div class="col-sm-2 col-lg-2">
+-                            Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
+-                        </div>
+-                        <div class="col-sm-3 col-lg-3">
+-                            <select onchange="getItem();" class="js-select2" name="item" style="width: 208px;" id="item">
+-                                <option value="null">Select</option>
+-                                <?php
+-                                foreach ($get_bahan_mentah as $data) { ?>
++                    </div>
++                </div>
++                <div class=" space_line row">
++                    <div class="col-sm-2 col-lg-2">
++                        Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i
++                                    class="bi bi-plus-circle"></i></a>
++                    </div>
++                    <div class="col-sm-3 col-lg-3">
++                        <select onchange="getItem();" class="js-select2" name="item" style="width: 208px;" id="item">
++                            <option value="null">Select</option>
++                            <?php
++                            foreach ($get_bahan_mentah as $data) { ?>
+ 
+-                                    <option value="<?= $data['code_item'] ?>"><?= $data['item'] ?></option>
+-                                <?php } ?>
+-                            </select>
++                                <option value="<?= $data['code_item'] ?>"><?= $data['item'] ?></option>
++                            <?php } ?>
++                        </select>
+ 
+-                        </div>
+-                        <div class="col-sm-1 col-lg-1" align="right">
+-                            Qty
+-                        </div>
+-                        <div class="col-sm-2 col-lg-2">
+-                            <input type="number" name="qty" id="qty" min="1" class="form-control square" required="required" style="border:1px solid black;">
+-                        </div>
+-                        <div class="col-sm-1 col-lg-1" align="right">
+-                            Unit
+-                        </div>
+-                        <div class="col-sm-2 col-lg-2" style="width: 75px;">
+-                            <input type="text" name="unit" id="unit" class="form-control square" required="required" style="border:1px solid black;" disabled="disabled">
+-                        </div>
+-                    </div>
+-                    <div class="space_line row mt-3">
+-                        <div class="col-lg-12">
+-                            <button type="submit" id="save" class="btn btn-sm btn-success btn-custom">Add Ingredient</button>
+-                        </div>
+-                    </div>
+-                </form>
++                    </div>
++                    <div class="col-sm-1 col-lg-1" align="right">
++                        Qty
++                    </div>
++                    <div class="col-sm-2 col-lg-2">
++                        <input type="number" name="qty" id="qty" min="1" class="form-control square" required="required"
++                               style="border:1px solid black;">
++                    </div>
++                    <div class="col-sm-1 col-lg-1" align="right">
++                        Unit
++                    </div>
++                    <div class="col-sm-2 col-lg-2" style="width: 75px;">
++                        <input type="text" name="unit" id="unit" class="form-control square" required="required"
++                               style="border:1px solid black;" disabled="disabled">
++                    </div>
++                </div>
++                <div class="space_line row mt-3">
++                    <div class="col-lg-12">
++                        <button type="submit" id="save" class="btn btn-sm btn-primary btn-custom">Add Ingredient
++                        </button>
++                    </div>
++                </div>
++            </form>
+ 
+-                <table class="table mb-0 mt-5">
+-                    <thead>
+-                        <tr>
+-                            <td width="50px" align="center">No</td>
+-                            <td width="250px" class="text-center">Item</td>
+-                            <td width="100px" class="text-center">Qty</td>
+-                            <td width="100px" class="text-center">Unit</td>
+-                            <td width="200px" class="text-center">Reference Cost</td>
+-                            <td class="text-center" width="150px">Average Cost</td>
+-                            <td width="200px" class="text-center">Last Buy Cost</td>
+-                            <td width="50px" class="text-center" align="center">Action</td>
+-                        </tr>
+-                    </thead>
+-                    <tbody>
+-                        <?php $no = 1;
+-                        foreach ($get_data_bm as $data_bm) : ?>
+-                            <tr>
+-                                <td class="text-center"><?= $no; ?></td>
+-                                <td class="text-center"><?= $data_bm['item']; ?></td>
+-                                <td class="text-center"><?= $data_bm['qty']; ?></td>
+-                                <td class="text-center"><?= $data_bm['unit']; ?></td>
+-                            </tr>
+-                        <?php $no++;
+-                        endforeach;
+-                        ?>
+-                    </tbody>
+-                </table>
++            <table class="table mb-0 mt-5">
++                <thead>
++                <tr>
++                    <td width="50px" align="center"><b>No</b></td>
++                    <td width="250px" class="text-center"><b>Item</b></td>
++                    <td width="100px" class="text-center"><b>Qty</b></td>
++                    <td width="100px" class="text-center"><b></b></td>
++                    <td width="200px" class="text-center"><b>Reference Cost</b></td>
++                    <td class="text-center" width="150px"><b>Average Cost</b></td>
++                    <td width="200px" class="text-center"><b>Last Buy Cost</b></td>
++                    <td width="50px" class="text-center" align="center"><b>Action</b></td>
++                </tr>
++                </thead>
++                <tbody>
++                <?php $no = 1;
++                $total_reference_cost = 0;
++                $total_average_cost = 0;
++                $total_lastbuy_cost = 0;
++                foreach ($get_data_bm as $data_bm) :
++                    $reference_cost_fix = intval($data_bm['reference_cost']) * intval($data_bm['qty']);
++                    $average_cost_fix = intval($data_bm['average_cost']) * intval($data_bm['qty']);
++                    $last_buy_cost_fix = intval($data_bm['last_buy_cost']) * intval($data_bm['qty']);
++                    ?>
++                    <tr>
++                        <td class="text-center"><?= $no; ?></td>
++                        <td class="text-center"><?= $data_bm['item']; ?></td>
++                        <td class="text-center"><?= $data_bm['qty']; ?></td>
++                        <td class="text-center"><?= $data_bm['unit']; ?></td>
++                        <td class="text-center"><?= "Rp. " . number_format($reference_cost_fix, 0, ',', '.'); ?></td>
++                        <td class="text-center"><?= "Rp. " . number_format($average_cost_fix, 0, ',', '.'); ?></td>
++                        <td class="text-center"><?= "Rp." . number_format($last_buy_cost_fix, 0, ',', '.'); ?></td>
++                        <td class="" align="center"><a class="text-center"
++                                                       href="../api/deletebahanmentah.php?code_item=<?= $data_bm['code_item']; ?> & code_bahan=<?= $data_bm['code_bahan'] ?>">
++                                <button style="background-color: transparent; text-decoration:none; border : none;"><i
++                                            class="fa fa-trash" aria-hidden="true"></i></button>
++                            </a></td>
++                    </tr>
++                    <?php $no++;
++                    $total_reference_cost += $reference_cost_fix;
++                    $total_average_cost += $average_cost_fix;
++                    $total_lastbuy_cost += $last_buy_cost_fix;
++                endforeach;
++                ?>
++                <tr>
++                    <td width="250px"><b>Total : </b></td>
++                    <td></td>
++                    <td></td>
++                    <td></td>
++                    <td id="reference_cost" class="text-center">
++                        <b><?= "Rp. " . number_format($total_reference_cost, 0, ',', '.'); ?></b></td>
++                    <td id="average_cost" class="text-center">
++                        <b><?= "Rp. " . number_format($total_average_cost, 0, ',', '.'); ?></b></td>
++                    <td id="lastbuy_cost" class="text-center">
++                        <b><?= "Rp. " . number_format($total_lastbuy_cost, 0, ',', '.'); ?></b></td>
++                    <td></td>
++
++                </tr>
++
++                
++                </tbody>
++
++            </table>
++
++
++
++
++
++            <div class="row text-center mt-4">
++                <div class="col-lg-12">
++                    <button class="btn btn-primary " id="btn-save" style="width: 900px !important;">Save Menu</button>
++                </div>
+             </div>
+         </div>
+-        <div id="pagination-container"></div>
+-    </div>
++    </div>
++    <div id="pagination-container"></div>
++</div>
+ 
+-    <script src="js/jquery.min.js"></script>
+-    <script src="js/popper.js"></script>
+-    <script src="js/bootstrap.min.js"></script>
+-    <script src="<?= BASE_URL ?>../../../js/main.js"></script>
+-    <script src="function.js"></script>
+-    <script src="main.js"></script>
++<script src="js/jquery.min.js"></script>
++<script src="js/popper.js"></script>
++<script src="js/bootstrap.min.js"></script>
++<script src="<?= BASE_URL ?>../../../js/main.js"></script>
++<script src="function.js"></script>
++<script src="main.js"></script>
+ 
+-    <script>
+-        $(document).ready(function() {
+-            $('.js-select2').select2();
+-        });
+-    </script>
++<script>
++    $(document).ready(function () {
++        $('.js-select2').select2();
++    });
++</script>
+ </body>
+ 
+ </html>
+\ No newline at end of file
+Index: bahansetengahjadi/main.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>function getItem() {\n  var item = document.getElementById(\"item\").value;\n  // alert(item);\n  var data = {\n    nama_item: item,\n  };\n\n  //   alert(item);\n\n  $.ajax({\n    type: \"POST\",\n    url: \"http://localhost/stock/api/getunit.php\",\n    data: data,\n    success: function (response) {\n      document.getElementById(\"unit\").value = response;\n    },\n  });\n}\n\n// var btnSave = document.getElementById(\"save\");\n// btnSave.addEventListener(\"click\", function () {\n//   alert(\"SUKSES\");\n// });\n\nvar new_item = document.getElementById(\"new\");\nnew_item.addEventListener(\"submit\", function () {\n  var code_bsj = document.getElementById(\"number\").value;\n  var nama_item = document.getElementById(\"name_item\").value;\n  var nama_item_fix = capitalizeWords(nama_item);\n  var qty = document.getElementById(\"qty\").value;\n  var code_item = document.getElementById(\"item\").value;\n  var data = {\n    code_bsj: code_bsj,\n    nama_item: nama_item_fix,\n    qty: qty,\n    code_item: code_item,\n  };\n  if (code_item == \"null\") {\n    alert(\"Silakan Pilih Item!\");\n  } else {\n    $.ajax({\n      type: \"POST\",\n      url: \"http://localhost/stock/api/bahansetengahjadi.php\",\n      data: data,\n\n      success: function (response) {\n        window.location.href =\n          \"http://localhost/stock/bahansetengahjadi/editbahansetengahjadi.php?data=\" +\n          response;\n      },\n    });\n  }\n});\n\nfunction capitalizeWords(str) {\n  // ! This function to change each first string to be Upper CASE!\n  // Pecah string menjadi array kata-kata\n  let words = str.split(\" \");\n\n  // Ubah setiap kata menjadi uppercase\n  let capitalizedWords = words.map(function (word) {\n    return word.charAt(0).toUpperCase() + word.slice(1);\n  });\n\n  // Gabungkan kembali array menjadi string\n  return capitalizedWords.join(\" \");\n}\n
+===================================================================
+diff --git a/bahansetengahjadi/main.js b/bahansetengahjadi/main.js
+--- a/bahansetengahjadi/main.js	
++++ b/bahansetengahjadi/main.js	
+@@ -24,7 +24,7 @@
+ 
+ var new_item = document.getElementById("new");
+ new_item.addEventListener("submit", function () {
+-  var code_bsj = document.getElementById("number").value;
++  var code_bsj = document.getElementById("code_item").value;
+   var nama_item = document.getElementById("name_item").value;
+   var nama_item_fix = capitalizeWords(nama_item);
+   var qty = document.getElementById("qty").value;
+@@ -65,3 +65,46 @@
+   // Gabungkan kembali array menjadi string
+   return capitalizedWords.join(" ");
+ }
++
++var btnSave = document.getElementById("btn-save");
++btnSave.addEventListener("click", function () {
++  var code_item = document.getElementById("code_item").value;
++  var average_cost = document.getElementById("average_cost").innerHTML;
++  average_cost = removeTags(average_cost);
++  average_cost = replaceRp(average_cost);
++  var reference_cost = document.getElementById("reference_cost").innerHTML;
++  reference_cost = removeTags(reference_cost);
++  reference_cost = replaceRp(reference_cost);
++  var lastBuy = document.getElementById("lastbuy_cost").innerHTML;
++  lastBuy = removeTags(lastBuy);
++  lastBuy = replaceRp(lastBuy);
++  // alert(code_item);
++  // alert(average_cost + " " + reference_cost + " " + lastBuy);
++
++  var data = {
++    code_item: code_item,
++    average_cost: average_cost,
++    reference_cost: reference_cost,
++    lastBuy: lastBuy,
++  };
++  $.ajax({
++    type: "POST",
++    url: "http://localhost/stock/api/insertbahansj.php",
++    data: data,
++    success: function (response) {
++      alert(response);
++      window.location.href =
++        "http://localhost/stock/bahansetengahjadi/bahan_setengah_jadi.php";
++    },
++  });
++});
++
++function removeTags(str) {
++  //! Function to remove tag html!
++  return str.replace(/<[^> Rp .]*>/g, "");
++}
++
++function replaceRp(str) {
++  //! This function to replace Rp . !
++  return str.replace(/[Rp.]/g, "");
++}

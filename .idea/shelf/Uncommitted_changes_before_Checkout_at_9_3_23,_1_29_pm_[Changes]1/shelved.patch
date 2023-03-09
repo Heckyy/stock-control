@@ -1,0 +1,331 @@
+Index: cogs/getcogs.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\n\nrequire_once \"../function/database.php\";\n\n// Create Object\n$db = new Database();\n\n// ! QUERY\n// SELECT tb_bahan_mentah.code_item as code_item, tb_bahan_mentah.item as nama_item , tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost as reference_cost,tb_cogs_bm.average_cost as average_cost, tb_cogs_bm.last_buy_cost as last_buy_cost FROM `tb_bahan_mentah` JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item \n\n// ! Get Data COGS raw materials, semi good materials and good materials!\n\n$query_get_data = \"SELECT distinct tb_bahan_mentah.code_item as code_item, tb_bahan_mentah.item as nama_item , tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost as reference_cost,tb_cogs_bm.average_cost as average_cost, tb_cogs_bm.last_buy_cost as last_buy_cost FROM `tb_bahan_mentah` JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item \";\n\n$result_data = $db->selectAll($query_get_data);\n\nforeach ($result_data as $data) {\n    $final_result[] = [\n        \"code_item\" => $data['code_item'],\n        \"name_item\" => $data['nama_item'],\n        \"tipe_item\" => $data['tipe_item'],\n        \"reference_cost\" => $data['reference_cost'],\n        \"avg_cost\" => $data['average_cost'],\n        \"last_buy_cost\" => $data['last_buy_cost']\n    ];\n}\necho json_encode($final_result, JSON_PRETTY_PRINT);\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cogs/getcogs.php b/cogs/getcogs.php
+--- a/cogs/getcogs.php	
++++ b/cogs/getcogs.php	
+@@ -1,9 +1,11 @@
+ <?php
+ 
+ require_once "../function/database.php";
++require_once "../function/rupiah.php";
+ 
+ // Create Object
+ $db = new Database();
++$rp = new Rupiah();
+ 
+ // ! QUERY
+ // SELECT tb_bahan_mentah.code_item as code_item, tb_bahan_mentah.item as nama_item , tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost as reference_cost,tb_cogs_bm.average_cost as average_cost, tb_cogs_bm.last_buy_cost as last_buy_cost FROM `tb_bahan_mentah` JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item 
+@@ -19,9 +21,9 @@
+         "code_item" => $data['code_item'],
+         "name_item" => $data['nama_item'],
+         "tipe_item" => $data['tipe_item'],
+-        "reference_cost" => $data['reference_cost'],
+-        "avg_cost" => $data['average_cost'],
+-        "last_buy_cost" => $data['last_buy_cost']
++        "reference_cost" => $rp->format(($data['reference_cost'])),
++        "avg_cost" => $rp->format($data['average_cost']),
++        "last_buy_cost" => $rp->format($data['last_buy_cost'])
+     ];
+ }
+ echo json_encode($final_result, JSON_PRETTY_PRINT);
+Index: bahansetengahjadi/bahan_setengah_jadi.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\nrequire_once('../baseUrl.php');\n?>\n<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <title>Inventory</title>\n  <meta charset=\"utf-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\n  <script src=\"https://code.jquery.com/jquery-3.6.0.min.js\"></script>\n  <script src=\"https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js\"></script>\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900\" rel=\"stylesheet\" />\n  <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\" />\n  <link rel=\"stylesheet\" href=\"style.css\" />\n</head>\n\n<body>\n  <div class=\"wrapper d-flex align-items-stretch\">\n    <nav id=\"sidebar\">\n      <div class=\"custom-menu\">\n        <button type=\"button\" id=\"sidebarCollapse\" class=\"btn btn-primary\">\n          <i class=\"fa fa-bars\"></i>\n          <span class=\"sr-only\">Toggle Menu</span>\n        </button>\n      </div>\n      <h1><a href=\"index.html\" class=\"logo\">Inventory</a></h1>\n      <ul class=\"list-unstyled components mb-5\">\n        <li class=\"active\">\n          <a href=\"<?= BASE_URL ?>../../../bahanmentah.php\"> Bahan Mentah</a>\n        </li>\n        <li>\n          <a href=\"<?= BASE_URL ?>../../bahan_setengah_jadi.php\"> Bahan Setengah Jadi</a>\n        </li>\n        <li>\n          <a href=\"<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php\"> Bahan Jadi</a>\n        </li>\n        <li>\n          <a href=\"<?= BASE_URL ?>../../../index.php\"> COGS</a>\n        </li>\n      </ul>\n    </nav>\n\n    <!-- Page Content  -->\n    <div id=\"content\" class=\"p-4 p-md-5 pt-5\">\n      <h2 class=\"mb-4\">Bahan Setengah Jadi</h2>\n      <button class=\"btn btn-primary mb-3\" id=\"buat-menu\">Buat Bahan</button>\n      <table class=\"table\">\n        <thead>\n          <tr>\n            <th scope=\"col\">Number</th>\n            <th scope=\"col\">Code</th>\n            <th scope=\"col\">Item</th>\n            <th scope=\"col\">Category</th>\n            <th scope=\"col\">Ingredient</th>\n            <th scope=\"col\">Cost</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr onclick=\"cetak()\" style=\"cursor: pointer\">\n            <th scope=\"row\">1</th>\n            <td>BSJ001</td>\n            <td>Nasi Putih</td>\n            <td>27-10-2022</td>\n            <td>2</td>\n            <td>Rp.2.500</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div id=\"pagination-container\"></div>\n  </div>\n\n  <script src=\"js/jquery.min.js\"></script>\n  <script src=\"js/popper.js\"></script>\n  <script src=\"js/bootstrap.min.js\"></script>\n  <script src=\"<?= BASE_URL ?>../../../js/main.js\"></script>\n  <script src=\"function.js\"></script>\n</body>\n\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bahansetengahjadi/bahan_setengah_jadi.php b/bahansetengahjadi/bahan_setengah_jadi.php
+--- a/bahansetengahjadi/bahan_setengah_jadi.php	
++++ b/bahansetengahjadi/bahan_setengah_jadi.php	
+@@ -1,5 +1,21 @@
+ <?php
+ require_once('../baseUrl.php');
++require_once "../function/database.php";
++require_once "../function/rupiah.php";
++
++
++$db = new Database();
++$rp = new Rupiah();
++
++// ! Get Semi Good Material And it cost!
++
++$query_get_data = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item , tb_bahan_mentah.item as item, tb_cogs_bm.periode as periode , tb_cogs_bm.reference_cost, tb_cogs_bm.average_cost as average_cost,tb_cogs_bm.last_buy_cost as lastbuy_cost FROM tb_bahan_mentah JOIN tb_cogs_bm ON tb_cogs_bm.code_item = tb_bahan_mentah.code_item WHERE tb_bahan_mentah.code_item like '%BSJ%' order by code_item ASC";
++
++$results = $db->selectAll($query_get_data);
++// var_dump($results);
++
++
++
+ ?>
+ <!DOCTYPE html>
+ <html lang="en">
+@@ -45,26 +61,39 @@
+     <div id="content" class="p-4 p-md-5 pt-5">
+       <h2 class="mb-4">Bahan Setengah Jadi</h2>
+       <button class="btn btn-primary mb-3" id="buat-menu">Buat Bahan</button>
++      <button class="btn btn-primary mb-3" id="update-menu">Update COGS</button>
++      <div class="row">
++        <div class="col-lg-12 text-right">Last Update Menu : <span id="last-update"></span> </div>
++      </div>
++
+       <table class="table">
+         <thead>
+           <tr>
+-            <th scope="col">Number</th>
+-            <th scope="col">Code</th>
+-            <th scope="col">Item</th>
+-            <th scope="col">Category</th>
+-            <th scope="col">Ingredient</th>
+-            <th scope="col">Cost</th>
++            <th class="text-center" scope="col">Number</th>
++            <th class="text-center" scope="col">Code</th>
++            <th class="text-center" scope="col">Item</th>
++            <th class="text-center" scope="col">Reference Cost</th>
++            <th class="text-center" scope="col">Average Cost</th>
++            <th class="text-center" scope="col">Last Buy Cost</th>
+           </tr>
+         </thead>
+         <tbody>
+-          <tr onclick="cetak()" style="cursor: pointer">
+-            <th scope="row">1</th>
+-            <td>BSJ001</td>
+-            <td>Nasi Putih</td>
+-            <td>27-10-2022</td>
+-            <td>2</td>
+-            <td>Rp.2.500</td>
+-          </tr>
++
++
++          <?php
++          $no = 1;
++          foreach ($results as $result) : ?>
++            <tr style="cursor:pointer;">
++              <td class="text-center" onclick="redirect(this)" data-id="<?= $result['code_item']; ?>"><?= $no; ?></td>
++              <td id="code-bsj" onclick="redirect(this)" data-id="<?= $result['code_item']; ?>" class="text-center code-bsj"><?= $result['code_item']; ?></td>
++              <td class="text-center" onclick="redirect(this)" data-id="<?= $result['code_item']; ?>"><?= $result['item']; ?></td>
++              <td class="text-center" onclick="redirect(this)" data-id="<?= $result['code_item']; ?>"><?= $rp->format($result['reference_cost']); ?></td>
++              <td class="text-center" onclick="redirect(this)" data-id="<?= $result['code_item']; ?>"><?= $rp->format($result['average_cost']); ?></td>
++              <td class="text-center" onclick="redirect(this)" data-id="<?= $result['code_item']; ?>"><?= $rp->format($result['lastbuy_cost']); ?></td>
++            </tr>
++          <?php $no++;
++          endforeach; ?>
++
+         </tbody>
+       </table>
+     </div>
+Index: index.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\nrequire_once(\"baseUrl.php\");\n?>\n<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <title>Inventory</title>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC\" crossorigin=\"anonymous\">\n\n\n    <script src=\"https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js\"></script>\n\n    <link href=\"https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900\" rel=\"stylesheet\" />\n\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" />\n</head>\n\n<body>\n    <div class=\"wrapper d-flex align-items-stretch\">\n        <nav id=\"sidebar\">\n            <div class=\"custom-menu\">\n                <button type=\"button\" id=\"sidebarCollapse\" class=\"btn btn-primary\">\n                    <i class=\"fa fa-bars\"></i>\n                    <span class=\"sr-only\">Toggle Menu</span>\n                </button>\n            </div>\n            <h1><a href=\"index.php\" class=\"logo\">COGS</a></h1>\n            <ul class=\"list-unstyled components mb-5\">\n                <li class=\"active\">\n                    <a href=\"bahanmentah.php\"> Bahan Mentah</a>\n                </li>\n                <li>\n                    <a href=\"bahansetengahjadi/bahan_setengah_jadi.php\"> Bahan Setengah Jadi</a>\n                </li>\n                <li>\n                    <a href=\"bahanjadi/bahan_jadi.php\"> Bahan Jadi</a>\n                </li>\n                <li>\n                    <a href=\"index.php\"> COGS</a>\n                </li>\n            </ul>\n        </nav>\n\n        <!-- Page Content  -->\n        <div id=\"content\" class=\"p-4 p-md-5 pt-5\">\n            <h2 class=\"mb-4\">Costing</h2>\n            <a href=\"bahanmentah/tambah_bahan_mentah.php\"> <button class=\"btn btn-primary mb-lg-3\">Tambah Item</button></a>\n            <button class=\"btn btn-primary mb-lg-3\" id=\"update-cogs\">Update COGS</button>\n            <div class=\"last-update  text-right\">Last Update COGS : <span id=\"last-cogs\"></span></div>\n            <table class=\"table\">\n                <thead>\n                    <tr>\n\n                        <th scope=\"col\" class=\"text-center\">No</th>\n                        <th scope=\"col\" class=\"text-center\">Code</th>\n                        <th scope=\"col\" class=\"text-center\">Name</th>\n                        <th scope=\"col\" class=\"text-center\">Type Of Inventory</th>\n                        <th scope=\"col\" class=\"text-center\">Reference Cost</th>\n                        <th scope=\"col\" class=\"text-center\">Average Cost</th>\n                        <th scope=\"col\" class=\"text-center\">Last Buy Cost</th>\n                    </tr>\n                </thead>\n                <tbody id=\"data-table\">\n\n                </tbody>\n\n            </table>\n        </div>\n        <div id=\"pagination-container\"></div>\n    </div>\n\n\n    <script src=\"js/popper.js\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://code.jquery.com/jquery-3.6.0.min.js\"></script>\n    <script src=\"js/bootstrap.min.js\"></script>\n    <script src=\"cogs/main.js\"></script>\n\n</body>\n\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/index.php b/index.php
+--- a/index.php	
++++ b/index.php	
+@@ -1,5 +1,7 @@
+ <?php
+ require_once("baseUrl.php");
++require_once "function/rupiah.php";
++$rp = new Rupiah();
+ ?>
+ <!DOCTYPE html>
+ <html lang="en">
+@@ -48,9 +50,6 @@
+         <!-- Page Content  -->
+         <div id="content" class="p-4 p-md-5 pt-5">
+             <h2 class="mb-4">Costing</h2>
+-            <a href="bahanmentah/tambah_bahan_mentah.php"> <button class="btn btn-primary mb-lg-3">Tambah Item</button></a>
+-            <button class="btn btn-primary mb-lg-3" id="update-cogs">Update COGS</button>
+-            <div class="last-update  text-right">Last Update COGS : <span id="last-cogs"></span></div>
+             <table class="table">
+                 <thead>
+                     <tr>
+Index: api/updatecogs.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\n\nrequire_once('../function/database.php');\n$db = new Database();\n\n\n// !Get Periode\n\n$periode = $_POST['periode'];\n\n\n// !Get Code Item From tb_bahan_mentah!\n\n$query_get_code_bm = \"SELECT * from tb_bahan_mentah\";\n$get_data_code_bm = $db->selectAll($query_get_code_bm);\n// var_dump($get_data_code_bm);\n\nforeach ($get_data_code_bm  as $data) {\n    $code_item = $data['code_item'];\n    $reference_cost = $data['cost'];\n    $reference_cost_unit = $data['cost_unit'];\n\n    // ! Query GET Average Cost Unit !\n    $query_get_avg_item_cost  = \"SELECT  AVG(cost_unit) as avg_cost_unit FROM tb_bahan_mentah where code_item ='\" . $code_item . \"'ORDER BY code_item\";\n    $get_avg_item_cost = $db->selectAll($query_get_avg_item_cost);\n    $result_avg_unit = mysqli_fetch_assoc($get_avg_item_cost);\n    $avg_cost_unit = $result_avg_unit['avg_cost_unit'];\n\n\n    //! Query GET Last Buy Cost Unit !\n    $query_get_lastbuy_cost_item_unit = \"SELECT cost_unit as last_buy_cost_unit FROM `tb_bahan_mentah` where code_item = '\" . $code_item . \"' ORDER BY purchase_date DESC limit 1\";\n    $get_data_lastbuy_item_unit = $db->selectAll($query_get_lastbuy_cost_item_unit);\n    $result_lastbuy_item_unit = mysqli_fetch_assoc($get_data_lastbuy_item_unit);\n    $last_buy_cost_unit = $result_lastbuy_item_unit['last_buy_cost_unit'];\n\n\n    //! Query Get Average item!\n    $query_get_avg_item  = \"SELECT  AVG(cost) as avg_cost FROM tb_bahan_mentah where code_item ='\" . $code_item . \"'ORDER BY code_item\";\n    $get_avg_item = $db->selectAll($query_get_avg_item);\n    $result_avg = mysqli_fetch_assoc($get_avg_item);\n    $avg_cost = $result_avg['avg_cost'];\n\n    // ! Query Get last buy cost\n    $query_get_lastbuy_cost_item = \"SELECT cost as last_buy_cost FROM `tb_bahan_mentah` where code_item = '\" . $code_item . \"' ORDER BY purchase_date DESC limit 1\";\n    $get_data_lastbuy = $db->selectAll($query_get_lastbuy_cost_item);\n    $result_lastbuy = mysqli_fetch_assoc($get_data_lastbuy);\n    $last_buy_cost = $result_lastbuy['last_buy_cost'];\n\n    //! Check code item in cogs, If already exists, run query update, if it doesnt already -> run query insert data\n\n    $query_cek_code_item = \"Select * from tb_cogs_bm where code_item='\" . $code_item . \"'\";\n    $get_cek_code_item = $db->selectAll($query_cek_code_item);\n    if (mysqli_num_rows($get_cek_code_item) > 0) {\n        $query_update_cogs = \"UPDATE  tb_cogs_bm SET  average_cost='\" . $avg_cost . \"',last_buy_cost='\" . $last_buy_cost . \"', average_cost_unit='\" . $avg_cost_unit . \"',last_buy_unit='\" . $last_buy_cost_unit . \"' where code_item='\" . $code_item . \"'\";\n        $result = $db->update($query_update_cogs);\n    } else {\n        // ! Query INSERT data to table cogs!\n        $query_insert_cogs = \"INSERT INTO tb_cogs_bm SET code_item='\" . $code_item . \"',uuid=uuid(),periode='\" . $periode . \"',reference_cost='\" . $reference_cost . \"',reference_cost_unit='\" . $reference_cost_unit . \"',average_cost='\" . $avg_cost . \"',last_buy_cost='\" . $last_buy_cost . \"',average_cost_unit='\" . $avg_cost_unit . \"',last_buy_unit='\" . $last_buy_cost_unit . \"'\";\n        $result = $db->insert($query_insert_cogs);\n    }\n\n\n    // $periode;\n}\necho $result;\n\n// $date = new DateTime();\n// $result_date = $date->format(\"d-m-Y\");\n// echo $result_date;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/api/updatecogs.php b/api/updatecogs.php
+--- a/api/updatecogs.php	
++++ b/api/updatecogs.php	
+@@ -11,7 +11,7 @@
+ 
+ // !Get Code Item From tb_bahan_mentah!
+ 
+-$query_get_code_bm = "SELECT * from tb_bahan_mentah";
++$query_get_code_bm = "SELECT * from tb_bahan_mentah where code_item like '%BM%'";
+ $get_data_code_bm = $db->selectAll($query_get_code_bm);
+ // var_dump($get_data_code_bm);
+ 
+Index: .idea/stock.iml
+===================================================================
+diff --git a/.idea/stock.iml b/.idea/stock.iml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/stock.iml	
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="WEB_MODULE" version="4">
++  <component name="NewModuleRootManager">
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/modules.xml	
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/stock.iml" filepath="$PROJECT_DIR$/.idea/stock.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/php.xml
+===================================================================
+diff --git a/.idea/php.xml b/.idea/php.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/php.xml	
+@@ -0,0 +1,19 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="MessDetectorOptionsConfiguration">
++    <option name="transferred" value="true" />
++  </component>
++  <component name="PHPCSFixerOptionsConfiguration">
++    <option name="transferred" value="true" />
++  </component>
++  <component name="PHPCodeSnifferOptionsConfiguration">
++    <option name="highlightLevel" value="WARNING" />
++    <option name="transferred" value="true" />
++  </component>
++  <component name="PhpStanOptionsConfiguration">
++    <option name="transferred" value="true" />
++  </component>
++  <component name="PsalmOptionsConfiguration">
++    <option name="transferred" value="true" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/vcs.xml	
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	
++++ b/.idea/.gitignore	
+@@ -0,0 +1,8 @@
++# Default ignored files
++/shelf/
++/workspace.xml
++# Editor-based HTTP Client requests
++/httpRequests/
++# Datasource local storage ignored files
++/dataSources/
++/dataSources.local.xml
+Index: function/database.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\nclass Database\n{\n    private $host = 'localhost';\n    private $username = 'root';\n    private $db_name = 'stock';\n    private $db_password = '';\n    public $conn = \"\";\n    public function __construct()\n    {\n        $this->conn = mysqli_connect($this->host, $this->username, $this->db_password, $this->db_name);\n        //     if ($this->conn) {\n        //         echo \"koneksi berhasil\";\n        //         // $hasil = \"Koneksi Berhasil\";\n        //         // return $hasil;\n        //     }\n    }\n\n    public function insert($query)\n    {\n        $result = mysqli_query($this->conn, $query);\n        if ($result) {\n            return \"Anda Berhasil Memasukan Data\";\n        } else {\n            return \"Data Gagal Di Masukan!\";\n        }\n    }\n    public function update($query)\n    {\n        $result = mysqli_query($this->conn, $query);\n        if ($result) {\n            return \"Anda Berhasil Update Data!\";\n        } else {\n            return \"Update Data Gagal !\";\n        }\n    }\n    public function selectAll($query)\n    {\n        $result = mysqli_query($this->conn, $query);\n        return $result;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/function/database.php b/function/database.php
+--- a/function/database.php	
++++ b/function/database.php	
+@@ -39,4 +39,10 @@
+         $result = mysqli_query($this->conn, $query);
+         return $result;
+     }
++
++    public function delete($query)
++    {
++        $result = mysqli_query($this->conn, $query);
++        return $result;
++    }
+ }
+Index: bahansetengahjadi/buat_bahan_setengah_jadi.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\nrequire_once('../baseUrl.php');\nrequire_once('../function/database.php');\n$db = new Database();\n$query_get_data = \"select distinct item, code_item from  tb_bahan_mentah\";\n$get_bahan_mentah = $db->selectAll($query_get_data);\n// $result_get_data = mysqli_fetch_assoc($get_bahan_mentah);\n$date = new DateTime();\n$real_date = $date->format(\"d-m-Y\");\n$number_code = 1;\n// echo $real_date;\n\n\n// ! Create Code Item For Semi Good Materials\n\n$query_get_code_item = \"SELECT * from tb_bahan_mentah where code_item like '%BSJ%' order by code_item DESC limit 1\";\n$get_code_item = $db->selectAll($query_get_code_item);\n$result_code_item_bsj = mysqli_fetch_assoc($get_code_item);\nif (mysqli_num_rows($get_code_item) > 0) {\n    $code_item_bsj = $result_code_item_bsj['code_item'];\n    $last_number = ltrim($code_item_bsj, \"BSJ0\");\n    $new_number = $last_number + 1;\n    $code_item_bsj = \"BSJ\" . str_pad($new_number, 10, 0, STR_PAD_LEFT);\n    // var_dump($code_item_bsj);\n    // die();\n} else {\n    $code_item_bsj = \"BSJ\" . str_pad($number_code, 10, 0, STR_PAD_LEFT);\n}\n?>\n\n<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <title>Inventory</title>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\n    <script src=\"https://code.jquery.com/jquery-3.6.0.min.js\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js\"></script>\n    <link href=\"https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900\" rel=\"stylesheet\" />\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\" />\n    <link rel=\"stylesheet\" href=\"style.css\" />\n\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css\" />\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js\"></script>\n</head>\n\n<body>\n    <div class=\"wrapper d-flex align-items-stretch\">\n        <nav id=\"sidebar\">\n            <div class=\"custom-menu\">\n                <button type=\"button\" id=\"sidebarCollapse\" class=\"btn btn-primary\">\n                    <i class=\"fa fa-bars\"></i>\n                    <span class=\"sr-only\">Toggle Menu</span>\n                </button>\n            </div>\n            <h1><a href=\"index.html\" class=\"logo\">Inventory</a></h1>\n            <ul class=\"list-unstyled components mb-5\">\n                <li class=\"active\">\n                    <a href=\"<?= BASE_URL ?>../../../bahanmentah.php\"> Bahan Mentah</a>\n                </li>\n                <li>\n                    <a href=\"<?= BASE_URL ?>../../bahan_setengah_jadi.php\"> Bahan Setengah Jadi</a>\n                </li>\n                <li>\n                    <a href=\"<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php\"> Bahan Jadi</a>\n                </li>\n                <li>\n                    <a href=\"<?= BASE_URL ?>../../../index.php\"> COGS</a>\n                </li>\n            </ul>\n        </nav>\n        <!-- Page Content  -->\n        <div id=\"content\" class=\"p-4 p-md-5 pt-5\">\n            <div class=\"app-card-header p-3 main-content container-fluid \">\n                <div class=\"row justify-content-between align-items-center line\">\n                    <div class=\"col-auto\">\n                        <h4 class=\"app-card-title\">\n                            Buat Barang Setengah Jadi\n                        </h4>\n                    </div>\n                </div>\n                <hr style=\"height: 2px; border: none; color: black; background-color: black;\">\n            </div>\n\n            <div class=\"app-card-body pb-3 main-content container-fluid\">\n                <form method=\"POST\" id=\"new\">\n                    <div class=\"space_line row\">\n                        <div class=\"col-sm-2 col-lg-2\">\n                            Kode Item\n                        </div>\n                        <div class=\"col-sm-2 col-lg-3\">\n                            <input type=\"text\" name=\"number\" id=\"number\" class=\"form-control square\" required=\"required\" disabled=\"disabled\" value=\"<?= $code_item_bsj; ?>\">\n                        </div>\n                        <div class=\"col-sm-2 col-lg-2\" align=\"right\">\n                            Tanggal\n                        </div>\n                        <!-- <div class=\"col-sm-2 col-lg-2\">\n\t\t\t\t\t\t\t\t<input type=\"date\" name=\"tanggal\" id=\"tanggal\"  class=\"form-control square\">\n\t\t\t\t\t\t\t</div> -->\n                        <div class=\"col-sm-2 col-lg-2\">\n                            <input type=\"date\" name=\"tanggal\" id=\"tanggal\" class=\"form-control square\" required=\"required\" disabled=\"disabled\" value=\"<?php echo date('Y-m-d') ?>\">\n                        </div>\n                    </div>\n                    <div class=\"space_line row mt-3\">\n                        <div class=\"col-sm-2 col-lg-2\">\n                            Item Name\n                        </div>\n                        <div class=\"col-sm-2 col-lg-3\">\n                            <div class=\"form-group\">\n                                <input type=\"text\" class=\"form-control\" style=\"border:thin solid black\" id=\"name_item\" aria-describedby=\"emailHelp\" autocomplete=\"off\" required=\"required\">\n                            </div>\n\n                        </div>\n                    </div>\n                    <div class=\"space_line row\">\n                        <div class=\"col-sm-2 col-lg-2\">\n                            Ingredients <a href=\"#\" data-bs-toggle=\"modal\" data-bs-target=\"#tambah_barang\"><i class=\"bi bi-plus-circle\"></i></a>\n                        </div>\n                        <div class=\"col-sm-3 col-lg-3\">\n                            <select onchange=\"getItem();\" class=\"js-select2\" name=\"item\" style=\"width: 205px;\" id=\"item\">\n                                <option value=\"null\">Select</option>\n                                <?php\n                                foreach ($get_bahan_mentah as $data) { ?>\n\n                                    <option value=\"<?= $data['code_item'] ?>\"><?= $data['item'] ?></option>\n                                <?php } ?>\n                            </select>\n\n                        </div>\n                        <div class=\"col-sm-1 col-lg-1\" align=\"right\">\n                            Qty\n                        </div>\n                        <div class=\"col-sm-2 col-lg-2\">\n                            <input type=\"number\" name=\"qty\" id=\"qty\" min=\"1\" class=\"form-control square\" required=\"required\" style=\"border:1px solid black;\">\n                        </div>\n                        <div class=\"col-sm-1 col-lg-1\" align=\"right\">\n                            Unit\n                        </div>\n                        <div class=\"col-sm-2 col-lg-2\" style=\"width: 75px;\">\n                            <input type=\"text\" name=\"unit\" id=\"unit\" class=\"form-control square\" required=\"required\" style=\"border:1px solid black;\" disabled=\"disabled\">\n                        </div>\n                    </div>\n                    <div class=\"space_line row mt-3\">\n                        <div class=\"col-lg-12\">\n                            <button type=\"submit\" id=\"save\" class=\"btn btn-sm btn-success btn-custom\">Add Ingredient</button>\n                        </div>\n                    </div>\n                </form>\n\n                <table class=\"table mb-0 mt-5\">\n                    <thead>\n                        <tr>\n                            <td width=\"50px\" align=\"center\">No</td>\n                            <td width=\"250px\" class=\"text-center\">Item</td>\n                            <td width=\"200px\" class=\"text-center\">Reference Cost</td>\n                            <td class=\"text-center\">Average Cost</td>\n                            <td width=\"200px\" class=\"text-center\">Last Buy Cost</td>\n                            <td width=\"150px\" class=\"text-center\" align=\"center\">Aksi</td>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td colspan=\"6\">Data not found!</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <div id=\"pagination-container\"></div>\n    </div>\n\n    <script src=\"js/jquery.min.js\"></script>\n    <script src=\"js/popper.js\"></script>\n    <script src=\"js/bootstrap.min.js\"></script>\n    <script src=\"<?= BASE_URL ?>../../../js/main.js\"></script>\n    <script src=\"function.js\"></script>\n    <script src=\"main.js\"></script>\n\n    <script>\n        $(document).ready(function() {\n            $('.js-select2').select2();\n        });\n    </script>\n</body>\n\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bahansetengahjadi/buat_bahan_setengah_jadi.php b/bahansetengahjadi/buat_bahan_setengah_jadi.php
+--- a/bahansetengahjadi/buat_bahan_setengah_jadi.php	
++++ b/bahansetengahjadi/buat_bahan_setengah_jadi.php	
+@@ -90,7 +90,7 @@
+                             Kode Item
+                         </div>
+                         <div class="col-sm-2 col-lg-3">
+-                            <input type="text" name="number" id="number" class="form-control square" required="required" disabled="disabled" value="<?= $code_item_bsj; ?>">
++                            <input type="text" name="number" id="code_item" class="form-control square" required="required" disabled="disabled" value="<?= $code_item_bsj; ?>">
+                         </div>
+                         <div class="col-sm-2 col-lg-2" align="right">
+                             Tanggal
+Index: bahansetengahjadi/function.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>var btn = document.getElementById(\"buat-menu\");\nbtn.addEventListener(\"click\", function () {\n  window.location.href =\n    \"http://localhost/stock/bahansetengahjadi/buat_bahan_setengah_jadi.php\";\n});\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bahansetengahjadi/function.js b/bahansetengahjadi/function.js
+--- a/bahansetengahjadi/function.js	
++++ b/bahansetengahjadi/function.js	
+@@ -3,3 +3,21 @@
+   window.location.href =
+     "http://localhost/stock/bahansetengahjadi/buat_bahan_setengah_jadi.php";
+ });
++
++function redirect(e) {
++  var code_bsj = e.getAttribute("data-id");
++  // alert(code_bsj);
++  window.location.href =
++    "../bahansetengahjadi/editbahansetengahjadi.php?data=" + code_bsj;
++}
++
++var btnUpdate = document.getElementById("update-menu");
++btnUpdate.addEventListener("click", function () {
++  $.ajax({
++    type: "POST",
++    url: "http://localhost/stock/api/updatemenu.php",
++    success: function (response) {
++      alert(response);
++    },
++  });
++});
