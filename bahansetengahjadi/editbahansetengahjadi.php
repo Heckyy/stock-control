@@ -214,7 +214,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
             </div>
             <div class="mt-4">
                 <div class="row">
-                    <div class="col-lg-12 bg-danger"><button id="save-menu" class="btn btn-primary w-100">Save Menu</button></div>
+                    <div class="col-lg-12"><button id="save-menu" class="btn btn-primary w-100">Save Menu</button></div>
                 </div>
             </div>
         </div>

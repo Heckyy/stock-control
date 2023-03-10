@@ -79,10 +79,17 @@ btnSave.addEventListener("click", function () {
   lastbuy_cost = removeTag(reference_cost);
   lastbuy_cost = removeRp(reference_cost);
 
+  var data = {
+    reference_cost: reference_cost,
+    average_cost: average_cost,
+    lastbuy_cost: lastbuy_cost,
+    code_item: code_bsj,
+  };
+
   $.ajax({
     type: "POST",
     url: "http://localhost/stock/api/insertbahansj.php",
-    data: "data",
+    data: data,
     success: function (response) {
       alert(response);
       window.location.href =

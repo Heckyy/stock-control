@@ -9,7 +9,7 @@ $periode = $get_periode->format("m/Y");
 $code_item = $_POST['code_item'];
 $reference_cost = $_POST['reference_cost'];
 $average_cost = $_POST['average_cost'];
-$lastbuy_cost = $_POST['lastBuy'];
+$lastbuy_cost = $_POST['lastbuy_cost'];
 
 // ! Check KE DB apakah sudah pernah membuat menu!
 $query_cek_menu = "SELECT * from tb_cogs_bm where code_item='" . $code_item . "'";

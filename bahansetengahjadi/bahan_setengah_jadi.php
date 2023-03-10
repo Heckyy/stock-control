@@ -1,5 +1,10 @@
 <?php
 require_once('../baseUrl.php');
+require_once "../function/database.php";
+$db = new Database();
+// ! Get Data BSJ!
+$query_get_bsj = "SELECT distinct code_item,item,tipe_item,qty,unit,cost,cost_unit from tb_bahan_mentah where code_item like '%BSJ%' order by code_item ASC";
+$result_data = $db->selectAll($query_get_bsj);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,23 +53,29 @@ require_once('../baseUrl.php');
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Number</th>
-            <th scope="col">Code</th>
-            <th scope="col">Item</th>
-            <th scope="col">Category</th>
-            <th scope="col">Ingredient</th>
-            <th scope="col">Cost</th>
+            <th scope="col" class="text-center">Number</th>
+            <th scope="col" class="text-center">Code</th>
+            <th scope="col" class="text-center">Item</th>
+            <th scope="col" class="text-center">Type Of Inventory</th>
+            <th scope="col" class="text-center">Reference Cost/Unit</th>
+            <th scope="col" class="text-center">Average Cost Unit</th>
+            <th scope="col" class="text-center">Lastbuy Cost Unit</th>
           </tr>
         </thead>
         <tbody>
-          <tr onclick="cetak()" style="cursor: pointer">
-            <th scope="row">1</th>
-            <td>BSJ001</td>
-            <td>Nasi Putih</td>
-            <td>27-10-2022</td>
-            <td>2</td>
-            <td>Rp.2.500</td>
-          </tr>
+          <?php $no = 1;
+          foreach ($result_data as $data) : ?>
+            <tr style="cursor: pointer">
+              <td onclick="redirect(this)" scope="row" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $no; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $data['item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['tipe_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $data['code_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
+            </tr>
+          <?php $no++;
+          endforeach; ?>
         </tbody>
       </table>
     </div>
