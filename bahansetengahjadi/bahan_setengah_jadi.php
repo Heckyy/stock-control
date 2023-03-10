@@ -56,8 +56,9 @@ $result_data = $db->selectAll($query_get_bsj);
             <th scope="col" class="text-center">Number</th>
             <th scope="col" class="text-center">Code</th>
             <th scope="col" class="text-center">Item</th>
+            <th scope="col" class="text-center">Unit</th>
             <th scope="col" class="text-center">Type Of Inventory</th>
-            <th scope="col" class="text-center">Reference Cost/Unit</th>
+            <th scope="col" class="text-center">Reference Cost Unit</th>
             <th scope="col" class="text-center">Average Cost Unit</th>
             <th scope="col" class="text-center">Lastbuy Cost Unit</th>
           </tr>

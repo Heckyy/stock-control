@@ -12,6 +12,10 @@ if (isset($_POST)) {
     $code_item_bahan = $_POST['code_item'];
     $nama_item = $_POST['nama_item'];
     $qty = $_POST['qty'];
+    $output = $_POST['output'];
+    $output_unit = $_POST['output_unit'];
+    // echo $output . " " . $output_unit;
+    // die();
     // echo $code_item . " " . $nama_item . " " . $qty;
 
     // ! Get Average cost ,  reference cost and last buy cost from tb_cogs_bm!
@@ -37,7 +41,7 @@ if (isset($_POST)) {
     $query_insert_cogs = "INSERT INTO ";
 
     //! Process To Insert Data Into tb_bahan_mentah!
-    $query_insert_bm = "INSERT INTO tb_bahan_mentah SET uuid=uuid(),item='" . $nama_item . "', tipe_item='Semi Good Material',code_item='" . $code_item_bsj . "'";
+    $query_insert_bm = "INSERT INTO tb_bahan_mentah SET uuid=uuid(),item='" . $nama_item . "', tipe_item='Semi Good Material',code_item='" . $code_item_bsj . "',qty='" . $output . "',unit='" . $output_unit . "'";
     $db->insert($query_insert_bm);
     // ! Process To Insert Data INTO tb_bahan_sj
     $query_insert = "INSERT INTO tb_bahan_sj SET uuid=uuid(),code_bahan='" . $code_item_bahan . "',code_item='" . $code_item_bsj . "',qty='" . $qty . "'";

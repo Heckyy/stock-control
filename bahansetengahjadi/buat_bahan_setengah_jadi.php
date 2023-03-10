@@ -113,6 +113,33 @@ if (mysqli_num_rows($get_code_item) > 0) {
 
                         </div>
                     </div>
+                    <div class="space_line row mt-3">
+                        <div class="col-sm-2 col-lg-2">
+                            Output
+                        </div>
+                        <div class="col-sm-2 col-lg-3">
+                            <div class="form-group">
+                                <input type="number" class="form-control" style="border:thin solid black" id="output" aria-describedby="emailHelp" autocomplete="off" required="required">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="space_line row mt-3">
+                        <div class="col-sm-2 col-lg-2">
+                            Output Unit
+                        </div>
+                        <div class="col-sm-2 col-lg-3">
+                            <div class="form-group">
+                                <select name="" id="output_unit" class="js-select2" style="width: 205px;" required="required">
+                                    <option value="null">Select</option>
+                                    <option value="gr">gr</option>
+                                    <option value="ml">ml</option>
+                                    <option value="pcs">pcs</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
                     <div class="space_line row">
                         <div class="col-sm-2 col-lg-2">
                             Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
@@ -151,12 +178,12 @@ if (mysqli_num_rows($get_code_item) > 0) {
                 <table class="table mb-0 mt-5">
                     <thead>
                         <tr>
-                            <td width="50px" align="center">No</td>
-                            <td width="250px" class="text-center">Item</td>
-                            <td width="200px" class="text-center">Reference Cost</td>
-                            <td class="text-center">Average Cost</td>
-                            <td width="200px" class="text-center">Last Buy Cost</td>
-                            <td width="150px" class="text-center" align="center">Aksi</td>
+                            <td width="50px" align="center"><b>No</b></td>
+                            <td width="250px" class="text-center"><b>Item</b></td>
+                            <td width="200px" class="text-center"><b>Reference Cost</b></td>
+                            <td class="text-center"><b>Average Cost</b></td>
+                            <td width="200px" class="text-center"><b>Last Buy Cost</b></td>
+                            <td width="150px" class="text-center" align="center"><b>Aksi</b></td>
                         </tr>
                     </thead>
                     <tbody>

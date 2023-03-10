@@ -13,6 +13,8 @@ $get_bahan_mentah = $db->selectAll($query_get_data);
 $query_get_name_item = "SELECT * from tb_bahan_mentah where code_item='" . $code_item . "' limit 1";
 $get_name_item = mysqli_fetch_assoc($db->selectAll($query_get_name_item));
 $item = $get_name_item['item'];
+$qty_output = $get_name_item['qty'];
+$output_unit = $get_name_item['unit'];
 
 // ! GET DATA INGREDIENTS SEMI GOOD MATERIAL FROM tb_bahan_sj
 
@@ -29,14 +31,15 @@ foreach ($get_data as $data) {
 
 // SELECT DISTINCT tb_bahan_sj.code_item AS code_item,tb_bahan_sj.code_bahan as code_bahan ,tb_bahan_sj.qty as qty,tb_bahan_mentah.item as item,tb_bahan_mentah.unit as unit , tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost , tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_sj` JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm ON tb_bahan_sj.code_bahan = tb_cogs_bm.code_item WHERE tb_bahan_sj.code_item = "BSJ0000000001";
 
-$query_get_bm = "SELECT DISTINCT tb_bahan_sj.code_item AS code_item,tb_bahan_sj.code_bahan as code_bahan ,tb_bahan_sj.qty as qty,tb_bahan_mentah.item as item,tb_bahan_mentah.unit as unit , tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost , tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_sj` JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm ON tb_bahan_sj.code_bahan = tb_cogs_bm.code_item WHERE tb_bahan_sj.code_item = '" . $code_item . "'";
+// SELECT DISTINCT tb_bahan_sj.code_item AS code_item,tb_bahan_sj.code_bahan as code_bahan ,tb_bahan_sj.qty as qty,tb_bahan_mentah.item as item,tb_bahan_mentah.unit as unit ,tb_bahan_mentah.qty as qty_output, tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost , tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_sj` JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item OR tb_bahan_sj.code_item = tb_bahan_mentah.code_item JOIN tb_cogs_bm ON tb_bahan_sj.code_bahan = tb_cogs_bm.code_item WHERE tb_bahan_sj.code_item = "BSJ0000000001" AND tb_bahan_mentah.item LIKE"%Nasi putih%";
+
+$query_get_bm = " SELECT DISTINCT tb_bahan_sj.code_item AS code_item,tb_bahan_sj.code_bahan as code_bahan ,tb_bahan_sj.qty as qty,tb_bahan_mentah.item as item,tb_bahan_mentah.unit as unit , tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost , tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_sj` JOIN tb_bahan_mentah ON tb_bahan_sj.code_bahan = tb_bahan_mentah.code_item JOIN tb_cogs_bm ON tb_bahan_sj.code_bahan = tb_cogs_bm.code_item WHERE tb_bahan_sj.code_item ='" . $code_item . "'";
 // $get_data_bm = mysqli_fetch_assoc($db->selectAll($query_get_bm));
 $get_data_bm = $db->selectAll($query_get_bm);
-// foreach ($get_data_bm as $data) {
-//     var_dump($data);
-// }
 
-// 
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -126,6 +129,28 @@ $get_data_bm = $db->selectAll($query_get_bm);
 
                         </div>
                     </div>
+                    <div class="space_line row mt-3">
+                        <div class="col-sm-2 col-lg-2">
+                            Output
+                        </div>
+                        <div class="col-sm-2 col-lg-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $qty_output; ?> " disabled="disabled">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="space_line row mt-3">
+                        <div class="col-sm-2 col-lg-2">
+                            Unit Output
+                        </div>
+                        <div class="col-sm-2 col-lg-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $output_unit; ?> " disabled="disabled">
+                            </div>
+
+                        </div>
+                    </div>
                     <div class=" space_line row">
                         <div class="col-sm-2 col-lg-2">
                             Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
@@ -164,14 +189,14 @@ $get_data_bm = $db->selectAll($query_get_bm);
                 <table class="table mb-0 mt-5">
                     <thead>
                         <tr>
-                            <td width="50px" align="center">No</td>
-                            <td width="250px" class="text-center">Item</td>
-                            <td width="100px" class="text-center">Qty</td>
-                            <td width="100px" class="text-center">Unit</td>
-                            <td width="200px" class="text-center">Reference Cost</td>
-                            <td class="text-center" width="150px">Average Cost</td>
-                            <td width="200px" class="text-center">Last Buy Cost</td>
-                            <td width="50px" class="text-center" align="center">Action</td>
+                            <td width="50px" align="center"><b>No</b></td>
+                            <td width="250px" class="text-center"><b>Item</b></td>
+                            <td width="100px" class="text-center"><b>Qty</b></td>
+                            <td width="100px" class="text-center"><b>Unit</b></td>
+                            <td width="200px" class="text-center"><b>Reference Cost</b></td>
+                            <td class="text-center" width="150px"><b>Average Cost</b></td>
+                            <td width="200px" class="text-center"><b>Last Buy Cost</b></td>
+                            <td width="50px" class="text-center" align="center"><b>Action</b></td>
                         </tr>
                     </thead>
                     <tbody>

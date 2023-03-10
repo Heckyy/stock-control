@@ -24,6 +24,8 @@ function getItem() {
 
 var new_item = document.getElementById("new");
 new_item.addEventListener("submit", function () {
+  var output = document.getElementById("output").value;
+  var output_unit = document.getElementById("output_unit").value;
   var code_bsj = document.getElementById("number").value;
   var nama_item = document.getElementById("name_item").value;
   var nama_item_fix = capitalizeWords(nama_item);
@@ -32,6 +34,8 @@ new_item.addEventListener("submit", function () {
   var data = {
     code_bsj: code_bsj,
     nama_item: nama_item_fix,
+    output: output,
+    output_unit: output_unit,
     qty: qty,
     code_item: code_item,
   };
@@ -44,6 +48,7 @@ new_item.addEventListener("submit", function () {
       data: data,
 
       success: function (response) {
+        // alert(response);
         window.location.href =
           "http://localhost/stock/bahansetengahjadi/editbahansetengahjadi.php?data=" +
           response;
