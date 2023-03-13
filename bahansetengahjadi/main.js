@@ -39,6 +39,7 @@ new_item.addEventListener("submit", function () {
     qty: qty,
     code_item: code_item,
   };
+
   if (code_item == "null") {
     alert("Silakan Pilih Item!");
   } else {
@@ -46,7 +47,6 @@ new_item.addEventListener("submit", function () {
       type: "POST",
       url: "http://localhost/stock/api/bahansetengahjadi.php",
       data: data,
-
       success: function (response) {
         // alert(response);
         window.location.href =
@@ -77,6 +77,10 @@ btnSave.addEventListener("click", function () {
   var reference_cost = document.getElementById("reference_cost").innerHTML;
   var average_cost = document.getElementById("average_cost").innerHTML;
   var lastbuy_cost = document.getElementById("lastbuy_cost").innerHTML;
+  var unit_output = document.getElementById("output_unit").value;
+  var qty_output = document.getElementById("output").value;
+  // var date = document.getElementById("tanggal").value;
+
   reference_cost = removeTag(reference_cost);
   reference_cost = removeRp(reference_cost);
   average_cost = removeTag(reference_cost);
@@ -85,6 +89,9 @@ btnSave.addEventListener("click", function () {
   lastbuy_cost = removeRp(reference_cost);
 
   var data = {
+    // tanggal: date,
+    qty_output: qty_output,
+    unit_output: unit_output,
     reference_cost: reference_cost,
     average_cost: average_cost,
     lastbuy_cost: lastbuy_cost,
@@ -116,4 +123,17 @@ function removeRp(str) {
   str = str.replace(/\./g, "");
 
   return str;
+}
+
+function deleteBahan() {
+  var code_bm = document.getElementById("code_bm").innerHTML;
+  var code_item = document.getElementById("number").value;
+  // alert(code_item);
+  // alert(code_bm);
+
+  window.location.href =
+    "http://localhost/stock/api/deletebahanmentah.php?code_bahan=" +
+    code_bm +
+    "&code_item=" +
+    code_item;
 }

@@ -31,7 +31,10 @@ $result_data = $db->selectAll($query_get_bsj);
       </div>
       <h1><a href="index.html" class="logo">Inventory</a></h1>
       <ul class="list-unstyled components mb-5">
-        <li class="active">
+        <li class="">
+          <a href="<?= BASE_URL ?>../purchasing/purchasing.php"> Purchasing</a>
+        </li>
+        <li class="">
           <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
         </li>
         <li>

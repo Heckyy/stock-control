@@ -72,7 +72,10 @@ $get_data_bm = $db->selectAll($query_get_bm);
             </div>
             <h1><a href="index.html" class="logo">Inventory</a></h1>
             <ul class="list-unstyled components mb-5">
-                <li class="active">
+                <li class="">
+                    <a href="../purchasing/purchasing.php"> Purchasing</a>
+                </li>
+                <li class="">
                     <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
                 </li>
                 <li>
@@ -135,7 +138,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                         </div>
                         <div class="col-sm-2 col-lg-3">
                             <div class="form-group">
-                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $qty_output; ?> " disabled="disabled">
+                                <input type="text" class="form-control" style="border:thin solid black" id="output" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $qty_output; ?> " disabled="disabled">
                             </div>
 
                         </div>
@@ -146,7 +149,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                         </div>
                         <div class="col-sm-2 col-lg-3">
                             <div class="form-group">
-                                <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $output_unit; ?> " disabled="disabled">
+                                <input type="text" class="form-control" style="border:thin solid black" id="output_unit" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $output_unit; ?> " disabled="disabled">
                             </div>
 
                         </div>
@@ -190,6 +193,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                     <thead>
                         <tr>
                             <td width="50px" align="center"><b>No</b></td>
+                            <td width="250px" class="text-center"><b>Code</b></td>
                             <td width="250px" class="text-center"><b>Item</b></td>
                             <td width="100px" class="text-center"><b>Qty</b></td>
                             <td width="100px" class="text-center"><b>Unit</b></td>
@@ -211,13 +215,14 @@ $get_data_bm = $db->selectAll($query_get_bm);
                         ?>
                             <tr>
                                 <td class="text-center"><?= $no; ?></td>
+                                <td id="code_bm" class="text-center"><?= $data_bm['code_bahan']; ?></td>
                                 <td class="text-center"><?= $data_bm['item']; ?></td>
                                 <td class="text-center"><?= $data_bm['qty']; ?></td>
                                 <td class="text-center"><?= $data_bm['unit']; ?></td>
                                 <td class="text-center"><?= $rp->format($reference_cost); ?></td>
                                 <td class="text-center"><?= $rp->format($average_cost); ?></td>
                                 <td class="text-center"><?= $rp->format($lastbuy_cost); ?></td>
-                                <td class="text-center"><button style="background-color: transparent; border:none;"><i class="fa-solid fa-trash"></i></button></td>
+                                <td class="text-center" align="center"><button style="background-color: transparent; border:none;" onclick="deleteBahan()"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
                         <?php $no++;
 
@@ -225,6 +230,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                         ?>
                         <tr>
                             <td width="350px"><b>Total : </b> </td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

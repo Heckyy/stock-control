@@ -29,7 +29,10 @@ require_once("baseUrl.php");
       </div>
       <h1><a href="index.php" class="logo">COGS</a></h1>
       <ul class="list-unstyled components mb-5">
-        <li class="active">
+        <li class="">
+          <a href="purchasing/purchasing.php">Purchasing</a>
+        </li>
+        <li class="">
           <a href="index.php"> Bahan Mentah</a>
         </li>
         <li>

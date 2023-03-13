@@ -39,4 +39,9 @@ class Database
         $result = mysqli_query($this->conn, $query);
         return $result;
     }
+    public function delete($query)
+    {
+        $result = mysqli_query($this->conn, $query);
+        return $result;
+    }
 }

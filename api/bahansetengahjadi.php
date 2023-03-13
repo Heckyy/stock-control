@@ -37,12 +37,20 @@ if (isset($_POST)) {
 
     // echo "Last Buy Cost : " . $total_last_buy_cost . " Average Cost : " . $total_avg_cost . " Reference Cost : " . $total_reference_cost;
 
-    // ! Process Insert Data Into tb_cogs_bm
-    $query_insert_cogs = "INSERT INTO ";
+    // // ! Process Insert Data Into tb_cogs_bm
+    // $query_insert_cogs = "INSERT INTO ";
 
-    //! Process To Insert Data Into tb_bahan_mentah!
-    $query_insert_bm = "INSERT INTO tb_bahan_mentah SET uuid=uuid(),item='" . $nama_item . "', tipe_item='Semi Good Material',code_item='" . $code_item_bsj . "',qty='" . $output . "',unit='" . $output_unit . "'";
-    $db->insert($query_insert_bm);
+    // ! Cek di tb_bahan_mentah apakah sudah di input nama item tersebut, jika sudah maka tidak perlu di input lagi
+
+    $query_get_data = "SELECT * from tb_bahan_mentah where code_item='" . $code_item_bsj . "'";
+
+    $result_get_data = $db->selectAll($query_get_data);
+    if (mysqli_num_rows($result_get_data) < 0) {
+        //! Process To Insert Data Into tb_bahan_mentah!
+        $query_insert_bm = "INSERT INTO tb_bahan_mentah SET uuid=uuid(),item='" . $nama_item . "', tipe_item='Semi Good Material',code_item='" . $code_item_bsj . "',qty='" . $output . "',unit='" . $output_unit . "'";
+        $db->insert($query_insert_bm);
+    }
+
     // ! Process To Insert Data INTO tb_bahan_sj
     $query_insert = "INSERT INTO tb_bahan_sj SET uuid=uuid(),code_bahan='" . $code_item_bahan . "',code_item='" . $code_item_bsj . "',qty='" . $qty . "'";
     $db->insert($query_insert);
