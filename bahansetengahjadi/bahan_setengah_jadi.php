@@ -1,10 +1,16 @@
 <?php
 require_once('../baseUrl.php');
 require_once "../function/database.php";
+require_once "../function/rupiah.php";
 $db = new Database();
+$rp = new Rupiah();
 // ! Get Data BSJ!
-$query_get_bsj = "SELECT distinct code_item,item,tipe_item,qty,unit,cost,cost_unit from tb_bahan_mentah where code_item like '%BSJ%' order by code_item ASC";
+// $query_get_bsj = "SELECT distinct code_item,item,tipe_item,qty,unit,cost,cost_unit from tb_bahan_mentah where code_item like '%BSJ%' order by code_item ASC";
+// SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item AS item,tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost_unit as reference_unit, tb_cogs_bm.average_cost_unit AS average_cost_unit,tb_cogs_bm.last_buy_unit as lastbuy_unit FROM `tb_bahan_mentah` INNER JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item WHERE tb_bahan_mentah.code_item like"%BSJ%";
+$query_get_bsj = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item AS item,tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost_unit as reference_unit, tb_cogs_bm.average_cost_unit AS average_cost_unit,tb_cogs_bm.last_buy_unit as lastbuy_unit,tb_bahan_mentah.unit as unit FROM `tb_bahan_mentah` INNER JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item WHERE tb_bahan_mentah.code_item like'%BSJ%'";
 $result_data = $db->selectAll($query_get_bsj);
+$test_result = mysqli_fetch_assoc($result_data);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +38,7 @@ $result_data = $db->selectAll($query_get_bsj);
       <h1><a href="index.html" class="logo">Inventory</a></h1>
       <ul class="list-unstyled components mb-5">
         <li class="">
-          <a href="<?= BASE_URL ?>../purchasing/purchasing.php"> Purchasing</a>
+          <a href="../purchasing/purchasing.php"> Purchasing</a>
         </li>
         <li class="">
           <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
@@ -73,10 +79,11 @@ $result_data = $db->selectAll($query_get_bsj);
               <td onclick="redirect(this)" scope="row" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $no; ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $data['item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $data['unit']; ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['tipe_item']; ?></td>
-              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $data['code_item']; ?></td>
-              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
-              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $rp->format($data['reference_unit']); ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['average_cost_unit']); ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['lastbuy_unit']); ?></td>
             </tr>
           <?php $no++;
           endforeach; ?>

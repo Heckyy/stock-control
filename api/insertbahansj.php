@@ -13,7 +13,6 @@ $lastbuy_cost = $_POST['lastbuy_cost'];
 $qty_output = $_POST['qty_output'];
 $unit_output = $_POST['unit_output'];
 $date = $_POST['tanggal'];
-
 $dateTime = new DateTime($date);
 $date_fix = $dateTime->format("Y-m-d");
 
@@ -22,6 +21,9 @@ $date_fix = $dateTime->format("Y-m-d");
 $average_cost_unit = intval($average_cost) / intval($qty_output);
 $lastbuy_cost_unit = intval($lastbuy_cost) / intval($qty_output);
 $reference_cost_unit = intval($reference_cost) / intval($qty_output);
+
+// echo $lastbuy_cost_unit;
+// die();
 
 // ! Check KE DB apakah sudah pernah membuat menu!
 $query_cek_menu = "SELECT * from tb_cogs_bm where code_item='" . $code_item . "'";

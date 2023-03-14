@@ -45,7 +45,7 @@ if (isset($_POST)) {
     $query_get_data = "SELECT * from tb_bahan_mentah where code_item='" . $code_item_bsj . "'";
 
     $result_get_data = $db->selectAll($query_get_data);
-    if (mysqli_num_rows($result_get_data) < 0) {
+    if (mysqli_num_rows($result_get_data) <= 0) {
         //! Process To Insert Data Into tb_bahan_mentah!
         $query_insert_bm = "INSERT INTO tb_bahan_mentah SET uuid=uuid(),item='" . $nama_item . "', tipe_item='Semi Good Material',code_item='" . $code_item_bsj . "',qty='" . $output . "',unit='" . $output_unit . "'";
         $db->insert($query_insert_bm);

@@ -210,8 +210,8 @@ $get_data_bm = $db->selectAll($query_get_bm);
                             $average_cost = $data_bm['qty'] * $data_bm['average_cost'];
                             $lastbuy_cost = $data_bm['qty'] * $data_bm['lastbuy_cost'];
                             $total_reference_cost += $reference_cost;
-                            $total_average_cost += $reference_cost;
-                            $total_lastbuy_cost += $reference_cost;
+                            $total_average_cost += $average_cost;
+                            $total_lastbuy_cost += $lastbuy_cost;
                         ?>
                             <tr>
                                 <td class="text-center"><?= $no; ?></td>

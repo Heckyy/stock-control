@@ -57,6 +57,7 @@ if (isset($_FILES)) {
 
 
 
+
                 // change format become mysql format date (Y-m-ds)s
                 $date = new DateTime($purchase_date);
                 $final_purchase_date = $date->format("Y-m-d");
@@ -64,25 +65,23 @@ if (isset($_FILES)) {
 
                 //! Cek Ke database apakah code item sudah ada, kalau belum maka akan generate code item baru, jika item sudah pernah di buat kode itemnya, maka ambil code item tersebut.
 
-                $query_get_all = "select * from tb_bahan_mentah";
+                $query_get_all = "SELECT * from tb_bahan_mentah";
                 $get_all_data = $db->selectAll($query_get_all);
                 // echo $item;
 
 
                 if (mysqli_num_rows($get_all_data) > 0) {
                     $query_get_code_item = "SELECT * from tb_bahan_mentah where item='" . $item . "' limit 1";
+                    // echo $final_purchase_date;
                     $get_data_item = $db->selectAll($query_get_code_item);
-                    // var_dump(mysqli_num_rows($get_data_item));
-                    // die();
                     $result_data_item = mysqli_fetch_assoc($get_data_item);
                     if (mysqli_num_rows($get_data_item) > 0) {
                         $code_item = $result_data_item['code_item'];
                     } else {
-                        $query_get_last_code = "select * from tb_bahan_mentah order by code_item desc limit 1";
+                        $query_get_last_code = "SELECT * from tb_bahan_mentah where code_item like '%BM%' order by code_item desc limit 1";
                         $get_data_last_code = $db->selectAll($query_get_last_code);
                         $result_data_last_code = mysqli_fetch_assoc($get_data_last_code);
                         $last_code = $result_data_last_code['code_item'];
-                        // var_dump($last_code);
                         $number_last_code = ltrim($last_code, "BM0");
                         $fix_last_code = $number_last_code + 1;
                         $code_item = "BM" . str_pad($fix_last_code, 10, 0, STR_PAD_LEFT);
@@ -92,28 +91,17 @@ if (isset($_FILES)) {
                 }
 
 
-                $query_insert_barang_mentah = "insert into tb_bahan_mentah set code_item='" . $code_item . "',item='" . $item . "',purchase_date='" . $final_purchase_date . "',qty='" . $qty . "',unit='" . $unit . "',cost='" . $cost . "',cost_unit='" . $cost_unit . "',uuid=UUID(),tipe_item='" . $tipe_inventory . "'";
+                // $query_insert_barang_mentah = "insert into tb_bahan_mentah set code_item='" . $code_item . "',item='" . $item . "',purchase_date='" . $final_purchase_date . "',qty='" . $qty . "',unit='" . $unit . "',cost='" . $cost . "',cost_unit='" . $cost_unit . "',uuid=UUID(),tipe_item='" . $tipe_inventory . "'";
+                $query_insert_barang_mentah = "INSERT INTO tb_bahan_mentah SET uuid=UUID(),code_item ='" . $code_item . "',item='" . $item . "',tipe_item='" . $tipe_inventory . "',purchase_date='" . $final_purchase_date . "',qty='" . $qty . "',unit='" . $unit . "',cost='" . $cost . "',cost_unit='" . $cost_unit . "'";
                 $result = $db->insert($query_insert_barang_mentah);
                 $number_code++;
             }
         } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
             die('Error loading file: ' . $e->getMessage());
         }
-
-
-        // $spreadsheet =  IOFactory::load($_FILES['file_excel']['tmp_name']);
-        // $worksheet = $spreadsheet->getActiveSheet();
-        // $count_col = count($worksheet[0]);
     } else {
         echo "File upload failed, please try again.";
     }
-
-
-    // if ($ext != "xlsx") {
-    //     die("File Invalid");
-    // } else {
-    //     var_dump($data);
-    // }
 } else {
     echo "gagal";
 }
