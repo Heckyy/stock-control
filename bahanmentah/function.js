@@ -24,3 +24,14 @@ $(document).ready(function () {
     });
   });
 });
+
+// function cetak(e) {
+//   var code_bm = e.getAtrribute("data-id");
+//   alert(code_bm);
+// }
+function redirect(e) {
+  var code_bsj = e.getAttribute("data-id");
+  // alert(code_bsj);
+  window.location.href =
+    "http://localhost/stock/bahanmentah/editbahanmentah.php?data=" + code_bsj;
+}

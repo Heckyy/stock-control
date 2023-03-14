@@ -13,7 +13,10 @@ $(document).ready(function () {
         if (result.length) {
           $.each(result, function (index, value) {
             html += "<tr>";
-            html += "<td class='text-center'>" + no + "</td>";
+            html +=
+              "<td onclick='cetak(this)' data-id='`${value[0]}`' class='text-center'>" +
+              no +
+              "</td>";
             html += "<td class='text-center'>" + value[0] + "</td>";
             html += "<td class='text-center'>" + value[1] + "</td>";
             html += "<td class='text-center'>" + value[2] + "</td>";

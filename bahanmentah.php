@@ -1,5 +1,12 @@
 <?php
 require_once("baseUrl.php");
+require_once "function/database.php";
+require_once "function/rupiah.php";
+
+$db = new Database();
+
+$query_get_data = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item as item,tb_bahan_mentah.tipe_item as tipe_item,tb_bahan_mentah.unit as unit,tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost,tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_mentah` inner JOIN tb_cogs_bm ON tb_cogs_bm.code_item = tb_bahan_mentah.code_item where tb_bahan_mentah.code_item like'%BM%'";
+$result = $db->selectAll($query_get_data);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,14 +67,33 @@ require_once("baseUrl.php");
             <th scope="col" class="text-center">Number</th>
             <th scope="col" class="text-center">Code</th>
             <th scope="col" class="text-center">Item</th>
-            <th scope="col" class="text-center">Purchase Date</th>
-            <th scope="col" class="text-center">Qty</th>
             <th scope="col" class="text-center">Unit</th>
-            <th scope="col" class="text-center">Cost</th>
-            <th scope="col" class="text-center">Cost / Unit</th>
+            <th scope="col" class="text-center">Type Of Inventory</th>
+            <th scope="col" class="text-center">Reference Cost</th>
+            <th scope="col" class="text-center">Average Cost</th>
+            <th scope="col" class="text-center">Lastbuy Cost</th>
           </tr>
         </thead>
-        <tbody class="data-table" id="data-table">
+        <tbody class="data-table">
+          <?php
+          $no = 1;
+          foreach ($result as $data) : ?>
+            <tr style="cursor:pointer">
+              <td scope="row" s onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $no; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['code_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['unit']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['tipe_item']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['reference_cost']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['average_cost']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['lastbuy_cost']; ?></td>
+
+
+
+            </tr>
+          <?php $no++;
+          endforeach; ?>
+
         </tbody>
       </table>
     </div>
@@ -80,6 +106,7 @@ require_once("baseUrl.php");
   <script src="js/bootstrap.min.js"></script>
   <script src="js/main.js"></script>
   <script src="bahanmentah/main.js"></script>
+  <script src="bahanmentah/function.js"></script>
 </body>
 
 </html>
