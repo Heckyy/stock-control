@@ -170,7 +170,7 @@ if (mysqli_num_rows($get_code_item) > 0) {
                     </div>
                     <div class="space_line row mt-3">
                         <div class="col-lg-12">
-                            <button type="submit" id="save" class="btn btn-sm btn-success btn-custom">Add Ingredient</button>
+                            <button type="submit" id="save" class="btn btn-sm btn-primary btn-custom">Add Ingredient</button>
                         </div>
                     </div>
                 </form>

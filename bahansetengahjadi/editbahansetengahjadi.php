@@ -184,7 +184,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                     </div>
                     <div class="space_line row mt-3">
                         <div class="col-lg-12">
-                            <button type="submit" id="save" class="btn btn-sm btn-success btn-custom">Add Ingredient</button>
+                            <button type="submit" id="save" class="btn btn-sm btn-primary btn-custom">Add Ingredient</button>
                         </div>
                     </div>
                 </form>
