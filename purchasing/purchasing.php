@@ -11,7 +11,7 @@ $format = new Rupiah();
 
 
 $db = new Database();
-$query_get_data = "SELECT * from tb_bahan_mentah where code_item like '%BM%'";
+$query_get_data = "SELECT * from tb_bahan_mentah where code_item like '%BM%' order by purchase_date DESC";
 $result_get_data = $db->selectAll($query_get_data);
 
 
