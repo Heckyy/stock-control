@@ -52,66 +52,31 @@ require_once("../baseUrl.php");
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
       <h2 class="mb-4">Bahan Jadi</h2>
+      <div class="mb-3">
+        <button onclick="direct()" class="btn btn-primary">Buat Menu</button>
+      </div>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">Number</th>
             <th scope="col">Code</th>
             <th scope="col">Item</th>
-            <th scope="col">Category</th>
-            <th scope="col">Ingredient</th>
-            <th scope="col">Cost</th>
+            <th scope="col">Type Of Inventory</th>
+            <th scope="col">Reference Cost</th>
+            <th scope="col">Average Cost</th>
+            <th scope="col">Lastbuy Cost</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr onclick="cetak()" style="cursor: pointer">
-            <th scope="row">1</th>
-            <td id="id_item">BSJ001</td>
-            <td>Nasi Putih</td>
-            <td>Nasi</td>
-            <td>2</td>
-            <td>Rp.2.500</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div id="pagination-container"></div>
-    <div class="button bg-danger">
-      <button class="btn btn-primary fixed-bottom ml-auto mb-5" id="btn-tambah" style="width: 60px; height: 60px; border-radius: 50%"></button>
-    </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name" style="border: 0.05px solid black" />
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">Message:</label>
-              <textarea class="form-control" id="message-text" style="border: 0.05px solid black"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-primary">Send message</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Modal -->
-
+  
   <script src="js/jquery.min.js"></script>
   <script src="js/popper.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -120,6 +85,7 @@ require_once("../baseUrl.php");
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
   <script src="js/main.js"></script>
   <script src="<?= BASE_URL ?>../../../js/main.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>

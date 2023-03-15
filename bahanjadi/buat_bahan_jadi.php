@@ -2,7 +2,7 @@
 require_once('../baseUrl.php');
 require_once('../function/database.php');
 $db = new Database();
-$query_get_data = "select distinct item, code_item from  tb_bahan_mentah";
+$query_get_data = "select distinct item, code_item from tb_bahan_mentah where code_item like'%BSJ%' or code_item like'%BM%'";
 $get_bahan_mentah = $db->selectAll($query_get_data);
 // $result_get_data = mysqli_fetch_assoc($get_bahan_mentah);
 $date = new DateTime();
@@ -13,18 +13,18 @@ $number_code = 1;
 
 // ! Create Code Item For Semi Good Materials
 
-$query_get_code_item = "SELECT * from tb_bahan_mentah where code_item like '%BSJ%' order by code_item DESC limit 1";
+$query_get_code_item = "SELECT * from tb_bahan_mentah where code_item like '%BJ%' order by code_item DESC limit 1";
 $get_code_item = $db->selectAll($query_get_code_item);
 $result_code_item_bsj = mysqli_fetch_assoc($get_code_item);
 if (mysqli_num_rows($get_code_item) > 0) {
     $code_item_bsj = $result_code_item_bsj['code_item'];
-    $last_number = ltrim($code_item_bsj, "BSJ0");
+    $last_number = ltrim($code_item_bsj, "BM0");
     $new_number = $last_number + 1;
-    $code_item_bsj = "BSJ" . str_pad($new_number, 10, 0, STR_PAD_LEFT);
+    $code_item_bsj = "BJ" . str_pad($new_number, 10, 0, STR_PAD_LEFT);
     // var_dump($code_item_bsj);
     // die();
 } else {
-    $code_item_bsj = "BSJ" . str_pad($number_code, 10, 0, STR_PAD_LEFT);
+    $code_item_bsj = "BJ" . str_pad($number_code, 10, 0, STR_PAD_LEFT);
 }
 ?>
 
@@ -63,10 +63,10 @@ if (mysqli_num_rows($get_code_item) > 0) {
                     <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="<?= BASE_URL ?>../../bahan_jadi.php"> Bahan Jadi</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
