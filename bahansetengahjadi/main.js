@@ -125,12 +125,12 @@ function removeRp(str) {
   return str;
 }
 
-function deleteBahan() {
-  var code_bm = document.getElementById("code_bm").innerHTML;
+function deleteBahan(e) {
   var code_item = document.getElementById("number").value;
+  var code_bm = e.getAttribute("data-id");
   // alert(code_item);
   // alert(code_bm);
-
+  // console.log(testing);
   window.location.href =
     "http://localhost/stock/api/deletebahanmentah.php?code_bahan=" +
     code_bm +

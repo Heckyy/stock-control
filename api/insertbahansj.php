@@ -12,9 +12,6 @@ $average_cost = $_POST['average_cost'];
 $lastbuy_cost = $_POST['lastbuy_cost'];
 $qty_output = $_POST['qty_output'];
 $unit_output = $_POST['unit_output'];
-$date = $_POST['tanggal'];
-$dateTime = new DateTime($date);
-$date_fix = $dateTime->format("Y-m-d");
 
 
 //! GET  COST / UNIT!

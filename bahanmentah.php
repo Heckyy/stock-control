@@ -4,6 +4,7 @@ require_once "function/database.php";
 require_once "function/rupiah.php";
 
 $db = new Database();
+$rp= new Rupiah();
 
 $query_get_data = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item as item,tb_bahan_mentah.tipe_item as tipe_item,tb_bahan_mentah.unit as unit,tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost,tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_mentah` inner JOIN tb_cogs_bm ON tb_cogs_bm.code_item = tb_bahan_mentah.code_item where tb_bahan_mentah.code_item like'%BM%'";
 $result = $db->selectAll($query_get_data);
@@ -15,12 +16,8 @@ $result = $db->selectAll($query_get_data);
   <title>Inventory</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-
   <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js"></script>
-
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
-
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -84,9 +81,9 @@ $result = $db->selectAll($query_get_data);
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['item']; ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['unit']; ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['tipe_item']; ?></td>
-              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['reference_cost']; ?></td>
-              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['average_cost']; ?></td>
-              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['lastbuy_cost']; ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['reference_cost']); ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['average_cost']); ?></td>
+              <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['lastbuy_cost']); ?></td>
 
 
 

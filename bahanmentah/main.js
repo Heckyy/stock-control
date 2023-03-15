@@ -75,4 +75,16 @@ $(document).ready(function () {
   function download() {
     window.location.href = "template-raw-materlas.xlsx";
   }
+
+  $("#new").submit(function () {
+    var code_item = document.getElementById("number").value;
+    var item_name = document.getElementById("name_item").value;
+    var reference_cost = document.getElementById("reference_cost").value;
+    var reference_cost_unit = document.getElementById(
+      "reference_cost_unit"
+    ).value;
+    alert(item_name);
+    alert(reference_cost);
+    alert(reference_cost_unit);
+  });
 });

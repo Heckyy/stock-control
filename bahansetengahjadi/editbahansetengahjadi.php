@@ -79,7 +79,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                     <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
@@ -222,7 +222,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                                 <td class="text-center"><?= $rp->format($reference_cost); ?></td>
                                 <td class="text-center"><?= $rp->format($average_cost); ?></td>
                                 <td class="text-center"><?= $rp->format($lastbuy_cost); ?></td>
-                                <td class="text-center" align="center"><button style="background-color: transparent; border:none;" onclick="deleteBahan()"><i class="fa-solid fa-trash"></i></button></td>
+                                <td  class="text-center" align="center"><button data-id = "<?=$data_bm['code_bahan'];?>" style="background-color: transparent; border:none;" onclick="deleteBahan(this)"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
                         <?php $no++;
 

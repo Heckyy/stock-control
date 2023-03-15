@@ -52,7 +52,7 @@ $result = mysqli_fetch_assoc($results);
                     <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
@@ -128,7 +128,7 @@ $result = mysqli_fetch_assoc($results);
                             <div class="form-group">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" style="border:thin solid black" id="reference_cost" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?= intval($result['reference_cost_unit']); ?>">
+                                    <input type="number" class="form-control" style="border:thin solid black" id="reference_cost_unit" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?= intval($result['reference_cost_unit']); ?>">
 
                                 </div>
                             </div>
