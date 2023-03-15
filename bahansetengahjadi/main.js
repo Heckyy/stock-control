@@ -83,10 +83,10 @@ btnSave.addEventListener("click", function () {
 
   reference_cost = removeTag(reference_cost);
   reference_cost = removeRp(reference_cost);
-  average_cost = removeTag(reference_cost);
-  average_cost = removeRp(reference_cost);
-  lastbuy_cost = removeTag(reference_cost);
-  lastbuy_cost = removeRp(reference_cost);
+  average_cost = removeTag(average_cost);
+  average_cost = removeRp(average_cost);
+  lastbuy_cost = removeTag(lastbuy_cost);
+  lastbuy_cost = removeRp(lastbuy_cost);
 
   var data = {
     // tanggal: date,
@@ -97,7 +97,7 @@ btnSave.addEventListener("click", function () {
     lastbuy_cost: lastbuy_cost,
     code_item: code_bsj,
   };
-
+  // alert(data.reference_cost);
   $.ajax({
     type: "POST",
     url: "http://localhost/stock/api/insertbahansj.php",

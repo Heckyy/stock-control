@@ -83,8 +83,22 @@ $(document).ready(function () {
     var reference_cost_unit = document.getElementById(
       "reference_cost_unit"
     ).value;
-    alert(item_name);
-    alert(reference_cost);
-    alert(reference_cost_unit);
+    // alert(item_name);
+    // alert(reference_cost);
+    // alert(reference_cost_unit);
+    var data = {
+      code_item: code_item,
+      item_name: item_name,
+      reference_cost: reference_cost,
+      reference_cost_unit: reference_cost_unit,
+    };
+    $.ajax({
+      type: "POST",
+      url: "http://localhost/stock/api/editbm.php",
+      data: data,
+      success: function (response) {
+        alert(response);
+      },
+    });
   });
 });

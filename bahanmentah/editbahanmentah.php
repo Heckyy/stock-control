@@ -6,7 +6,7 @@ $db = new Database();
 $rp = new Rupiah();
 $code_item  = $_GET['data'];
 
-$query_get_bm = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item as item,tb_bahan_mentah.tipe_item as tipe_item ,tb_cogs_bm.reference_cost_unit as reference_cost_unit , tb_cogs_bm.reference_cost as reference_cost FROM `tb_bahan_mentah` inner JOIN tb_cogs_bm on tb_cogs_bm.code_item = tb_bahan_mentah.code_item where tb_bahan_mentah.code_item = '" . $code_item . "'";
+$query_get_bm = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item as item,tb_bahan_mentah.tipe_item as tipe_item ,tb_cogs_bm.reference_cost_unit as reference_cost_unit ,tb_bahan_mentah.qty as qty, tb_bahan_mentah.unit as unit, tb_cogs_bm.reference_cost as reference_cost FROM `tb_bahan_mentah` inner JOIN tb_cogs_bm on tb_cogs_bm.code_item = tb_bahan_mentah.code_item where tb_bahan_mentah.code_item = '" . $code_item . "' order by tb_bahan_mentah.purchase_date ASC limit 1";
 $results = $db->selectAll($query_get_bm);
 $result = mysqli_fetch_assoc($results);
 // var_dump($result);
@@ -101,6 +101,17 @@ $result = mysqli_fetch_assoc($results);
                         <div class="col-sm-2 col-lg-3">
                             <div class="form-group">
                                 <input type="text" class="form-control" style="border:thin solid black" id="name_item" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $result['item']; ?> " disabled="disabled">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="space_line row mt-3">
+                        <div class="col-sm-2 col-lg-2">
+                            Qty
+                        </div>
+                        <div class="col-sm-2 col-lg-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control" style="border:thin solid black" id="qty" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?php echo $result['qty'] . " " . $result['unit']; ?> " disabled="disabled">
                             </div>
 
                         </div>

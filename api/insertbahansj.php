@@ -13,7 +13,6 @@ $lastbuy_cost = $_POST['lastbuy_cost'];
 $qty_output = $_POST['qty_output'];
 $unit_output = $_POST['unit_output'];
 
-
 //! GET  COST / UNIT!
 $average_cost_unit = intval($average_cost) / intval($qty_output);
 $lastbuy_cost_unit = intval($lastbuy_cost) / intval($qty_output);
