@@ -41,7 +41,7 @@ if (mysqli_num_rows($result) > 0) {
 } else {
     // ! Create New Menu!
 
-    $query_insert = "INSERT INTO tb_cogs_bm set uuid= uuid(), periode='" . $periode . "', code_item='" . $code_item . "',reference_cost='" . $reference_cost . "',average_cost='" . $average_cost . "',last_buy_cost='" . $lastbuy_cost . "'";
+    $query_insert = "INSERT INTO tb_cogs_bm set uuid= uuid(), periode='" . $periode . "', code_item='" . $code_item . "',reference_cost='" . $reference_cost . "',average_cost='" . $average_cost . "',last_buy_cost='" . $lastbuy_cost . "',reference_cost_unit='".$reference_cost_unit."',average_cost_unit='".$average_cost_unit."',last_buy_unit='".$lastbuy_cost_unit."'";
 
     if ($db->insert($query_insert)) {
         echo "Anda Berhasil Memasukan Menu!";

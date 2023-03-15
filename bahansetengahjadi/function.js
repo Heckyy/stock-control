@@ -10,3 +10,9 @@ function redirect(e) {
     "http://localhost/stock/bahansetengahjadi/editbahansetengahjadi.php?data=" +
     code_bsj;
 }
+
+function deleteAll(e) {
+  var code_item = e.getAttribute("data-id");
+  window.location.href =
+    "http://localhost/stock/api/deletemenuall.php?data=" + code_item;
+}
