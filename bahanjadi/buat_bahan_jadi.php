@@ -116,33 +116,7 @@ if (mysqli_num_rows($get_code_item) > 0) {
 
                         </div>
                     </div>
-                    <div class="space_line row mt-3">
-                        <div class="col-sm-2 col-lg-2">
-                            Output
-                        </div>
-                        <div class="col-sm-2 col-lg-3">
-                            <div class="form-group">
-                                <input type="number" class="form-control" style="border:thin solid black" id="output" aria-describedby="emailHelp" autocomplete="off" required="required">
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="space_line row mt-3">
-                        <div class="col-sm-2 col-lg-2">
-                            Output Unit
-                        </div>
-                        <div class="col-sm-2 col-lg-3">
-                            <div class="form-group">
-                                <select name="" id="output_unit" class="js-select2" style="width: 205px;" required="required">
-                                    <option value="null">Select</option>
-                                    <option value="gr">gr</option>
-                                    <option value="ml">ml</option>
-                                    <option value="pcs">pcs</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
+                    
                     <div class="space_line row">
                         <div class="col-sm-2 col-lg-2">
                             Ingredients <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_barang"><i class="bi bi-plus-circle"></i></a>
