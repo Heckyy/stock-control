@@ -66,7 +66,7 @@ $result_get_data = $db->selectAll($query_get_data);
         <div id="content" class="p-4 p-md-5 pt-5">
             <h2 class="mb-4">List Purchasing</h2>
             <a href="../bahanmentah/tambah_bahan_mentah.php"> <button class="btn btn-primary mb-lg-3">Tambah Item</button></a>
-            <div class="text-right"><a href="public/template-raw-materals.xlsx">Download Template</a></div>
+            <div class="text-right"><a href="../public/template-raw-materals.xlsx">Download Template</a></div>
             <div class="last-update text-right">Last Update COGS : <span id="last-cogs"></span></div>
             <table class="table">
                 <thead>

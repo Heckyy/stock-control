@@ -1,5 +1,13 @@
 <?php
 require_once("../baseUrl.php");
+require_once("../function/database.php");
+require_once("../function/rupiah.php");
+$db = new Database();
+$rp = new Rupiah();
+//! Get data good materials!
+
+$query_get_data = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item AS item,tb_bahan_mentah.tipe_item as tipe_item,tb_cogs_bm.reference_cost_unit as reference_unit, tb_cogs_bm.average_cost_unit AS average_cost_unit,tb_cogs_bm.last_buy_unit as lastbuy_unit,tb_bahan_mentah.unit as unit FROM `tb_bahan_mentah` INNER JOIN tb_cogs_bm ON tb_bahan_mentah.code_item = tb_cogs_bm.code_item WHERE tb_bahan_mentah.code_item like'%BJ%' order by code_item ASC";
+$result_data = $db->selectAll($query_get_data);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +25,7 @@ require_once("../baseUrl.php");
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -53,30 +62,53 @@ require_once("../baseUrl.php");
     <div id="content" class="p-4 p-md-5 pt-5">
       <h2 class="mb-4">Bahan Jadi</h2>
       <div class="mb-3">
-        <button onclick="direct()" class="btn btn-primary">Buat Menu</button>
+        <button onclick="directBahan()" class="btn btn-primary">Buat Menu</button>
       </div>
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Number</th>
-            <th scope="col">Code</th>
-            <th scope="col">Item</th>
-            <th scope="col">Type Of Inventory</th>
-            <th scope="col">Reference Cost</th>
-            <th scope="col">Average Cost</th>
-            <th scope="col">Lastbuy Cost</th>
-            <th scope="col">Action</th>
+            <th class="text-center" scope="col">Number</th>
+            <th scope="col" class="text-center">Code</th>
+            <th scope="col" class="text-center">Item</th>
+            <th scope="col" class="text-center">Type Of Inventory</th>
+            <th scope="col" class="text-center">Reference Cost</th>
+            <th scope="col" class="text-center">Average Cost</th>
+            <th scope="col" class="text-center">Lastbuy Cost</th>
+            <th scope="col" class="text-center">Action</th>
           </tr>
+
+
         </thead>
         <tbody>
-          </tr>
+          <?php $no = 1;
+          if (mysqli_num_rows($result_data)) {
+            foreach ($result_data as $data) :
+          ?>
+              <tr style="cursor: pointer;">
+                <td data-id="<?= $data['code_item']; ?>" onclick="direct(this)" class="text-center"><?= $no; ?></td>
+                <td data-id="<?= $data['code_item']; ?>" onclick="direct(this)" class="text-center"><?= $data['code_item']; ?></td>
+                <td onclick="direct(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['item']; ?></td>
+                <td onclick="direct(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $data['tipe_item']; ?></td>
+                <td onclick="direct(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['reference_unit']); ?></td>
+                <td onclick="direct(this)" class="text-center" data-id="<?= $data['code_item']; ?>"><?= $rp->format($data['average_cost_unit']); ?></td>
+                <td onclick="direct(this)" class="text-center" data-id="<?= $data['code_item']; ?>"><?= $rp->format($data['lastbuy_unit']); ?></td>
+                <td onclick="deleteMenu(this)" data-id="<?= $data['code_item']; ?>" class="text-center" align="center"><button onclick="deleteAll(this)" data-id="<?= $data['code_item']; ?>" style="background-color: transparent; border:none;"><i class="fa-solid fa-trash"></i></button></td>
+              </tr>
+
+            <?php endforeach; ?>
+
+          <?php } else { ?>
+            <tr>
+              <td>Data Not Found!</td>
+            </tr>
+          <?php }; ?>
         </tbody>
       </table>
     </div>
     <div id="pagination-container"></div>
   </div>
 
-  
+
   <script src="js/jquery.min.js"></script>
   <script src="js/popper.js"></script>
   <script src="js/bootstrap.min.js"></script>

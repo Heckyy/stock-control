@@ -16,8 +16,6 @@ if(isset($_POST)){
     // !Insert Into tb_bahan_mentah
     $query_insert_bahan_mentah = "INSERT INTO tb_bahan_mentah SET uuid=UUID(),code_item='".$code_item."',item='".$item."',tipe_item='Good Material'";
     $db->insert($query_insert_bahan_mentah);
-    
-
-
-
 }
+
+echo $code_item;
