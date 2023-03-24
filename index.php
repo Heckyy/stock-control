@@ -10,13 +10,18 @@ require_once("baseUrl.php");
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-
-    <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.1.8/dist/pagination.min.js"></script>
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Data tables -->
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
 </head>
 
 <body>
@@ -61,17 +66,16 @@ require_once("baseUrl.php");
                     <option value="Finished">Finished Good Material </option>
                 </select>
             </div>
-            <table class="table">
+            <table class="table" id="table">
                 <thead>
                     <tr>
 
-                        <th scope="col" class="text-center">No</th>
-                        <th scope="col" class="text-center">Code</th>
-                        <th scope="col" class="text-center">Name</th>
-                        <th scope="col" class="text-center">Type Of Inventory</th>
-                        <th scope="col" class="text-center">Reference Cost</th>
-                        <th scope="col" class="text-center">Average Cost</th>
-                        <th scope="col" class="text-center">Last Buy Cost</th>
+                        <th scope="col" class="">Code</th>
+                        <th scope="col" class="">Name</th>
+                        <th scope="col" class="">Type Of Inventory</th>
+                        <th scope="col" class="">Reference Cost</th>
+                        <th scope="col" class="">Average Cost</th>
+                        <th scope="col" class="">Last Buy Cost</th>
                     </tr>
                 </thead>
                 <tbody id="data-table">
@@ -86,7 +90,7 @@ require_once("baseUrl.php");
 
     <script src="js/popper.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="js/bootstrap.min.js"></script>
     <script src="cogs/main.js"></script>
     <script src="js/main.js"></script>
