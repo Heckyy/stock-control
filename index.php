@@ -51,9 +51,6 @@ require_once("baseUrl.php");
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5 pt-5">
             <h2 class="mb-4">Costing</h2>
-            <a href="bahanmentah/tambah_bahan_mentah.php"> <button class="btn btn-primary mb-lg-3">Tambah Item</button></a>
-            <button class="btn btn-primary mb-lg-3" id="update-cogs">Update COGS</button>
-            <div class="last-update  text-right">Last Update COGS : <span id="last-cogs"></span></div>
             <table class="table">
                 <thead>
                     <tr>
