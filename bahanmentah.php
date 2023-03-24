@@ -4,7 +4,7 @@ require_once "function/database.php";
 require_once "function/rupiah.php";
 
 $db = new Database();
-$rp= new Rupiah();
+$rp = new Rupiah();
 
 $query_get_data = "SELECT DISTINCT tb_bahan_mentah.code_item as code_item,tb_bahan_mentah.item as item,tb_bahan_mentah.tipe_item as tipe_item,tb_bahan_mentah.unit as unit,tb_cogs_bm.reference_cost_unit as reference_cost,tb_cogs_bm.average_cost_unit as average_cost,tb_cogs_bm.last_buy_unit as lastbuy_cost FROM `tb_bahan_mentah` inner JOIN tb_cogs_bm ON tb_cogs_bm.code_item = tb_bahan_mentah.code_item where tb_bahan_mentah.code_item like'%BM%'";
 $result = $db->selectAll($query_get_data);
@@ -37,13 +37,13 @@ $result = $db->selectAll($query_get_data);
           <a href="purchasing/purchasing.php">Purchasing</a>
         </li>
         <li class="">
-          <a href="index.php"> Bahan Mentah</a>
+          <a href="index.php">Raw Materials</a>
         </li>
         <li>
-          <a href="bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+          <a href="bahansetengahjadi/bahan_setengah_jadi.php"> Semi Good Materials</a>
         </li>
         <li>
-          <a href="bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+          <a href="bahanjadi/bahan_jadi.php"> Finished Good Materials</a>
         </li>
         <li>
           <a href="index.php">COGS</a>
@@ -53,11 +53,7 @@ $result = $db->selectAll($query_get_data);
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-      <h2 class="mb-4">Bahan Mentah</h2>
-      <a href="bahanmentah/tambah_bahan_mentah.php"> <button class="btn btn-primary mb-lg-3">Tambah Item</button></a>
-      <button class="btn btn-primary mb-lg-3" id="update-cogs">Update Cost</button>
-      <div class="text-right"><a href="public/template-raw-materals.xlsx">Download Template</a></div>
-      <div class="last-update text-right">Last Update Cost : <span id="last-cogs"></span></div>
+      <h2 class="mb-4">Raw Materials</h2>
       <table class="table">
         <thead>
           <tr>

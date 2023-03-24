@@ -32,13 +32,13 @@ require_once('../function/database.php');
                     <a href="<?= BASE_URL ?>../../../purchasing/purchasing.php"> Purchasing</a>
                 </li>
                 <li class="">
-                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
+                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Raw Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php">Finished Good Materials</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../bahanmentah.php"> COGS</a>
@@ -51,7 +51,7 @@ require_once('../function/database.php');
                 <div class="row justify-content-between align-items-center line">
                     <div class="col-auto">
                         <h4 class="app-card-title">
-                            Tambah Bahan Mentah
+                            Add Raw Materials
                         </h4>
                     </div>
                 </div>

@@ -79,7 +79,7 @@ if (mysqli_num_rows($get_code_item) > 0) {
                 <div class="row justify-content-between align-items-center line">
                     <div class="col-auto">
                         <h4 class="app-card-title">
-                            Buat Barang Setengah Jadi
+                            Create Finished Good Materials
                         </h4>
                     </div>
                 </div>

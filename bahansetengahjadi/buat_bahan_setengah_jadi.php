@@ -60,13 +60,13 @@ if (mysqli_num_rows($get_code_item) > 0) {
                     <a href="<?= BASE_URL ?>../../../purchasing/purchasing.php"> Purchasing</a>
                 </li>
                 <li class="">
-                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
+                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Raw Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Finished Good Materials</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
@@ -79,7 +79,7 @@ if (mysqli_num_rows($get_code_item) > 0) {
                 <div class="row justify-content-between align-items-center line">
                     <div class="col-auto">
                         <h4 class="app-card-title">
-                            Buat Barang Setengah Jadi
+                            Create Semi Good Materials
                         </h4>
                     </div>
                 </div>

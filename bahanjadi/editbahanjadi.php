@@ -85,7 +85,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                 <div class="row justify-content-between align-items-center line">
                     <div class="col-auto">
                         <h4 class="app-card-title">
-                            Buat Bahan Jadi
+                            Edit Finished Good Materials
                         </h4>
                     </div>
                 </div>

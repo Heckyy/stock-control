@@ -60,7 +60,7 @@ $result_data = $db->selectAll($query_get_data);
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-      <h2 class="mb-4">Bahan Jadi</h2>
+      <h2 class="mb-4">Finished Good Materials</h2>
       <div class="mb-3">
         <button onclick="directBahan()" class="btn btn-primary">Buat Menu</button>
       </div>

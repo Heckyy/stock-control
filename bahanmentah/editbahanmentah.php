@@ -49,13 +49,13 @@ $result = mysqli_fetch_assoc($results);
                     <a href="../purchasing/purchasing.php"> Purchasing</a>
                 </li>
                 <li class="">
-                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
+                    <a href="<?= BASE_URL ?>../../../bahanmentah.php">Raw Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahansetengahjadi/bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Finished Good Materials</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
@@ -68,7 +68,7 @@ $result = mysqli_fetch_assoc($results);
                 <div class="row justify-content-between align-items-center line">
                     <div class="col-auto">
                         <h4 class="app-card-title">
-                            Edit Bahan Mentah
+                            Edit Raw Materials
                         </h4>
                     </div>
                 </div>
@@ -124,7 +124,7 @@ $result = mysqli_fetch_assoc($results);
                             <div class="form-group">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" style="border:thin solid black" id="reference_cost" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?=intval($result['reference_cost'])?>">
+                                    <input type="number" class="form-control" style="border:thin solid black" id="reference_cost" aria-describedby="emailHelp" autocomplete="off" required="required" value="<?= intval($result['reference_cost']) ?>">
 
                                 </div>
                             </div>

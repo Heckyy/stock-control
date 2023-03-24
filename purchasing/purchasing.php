@@ -48,13 +48,13 @@ $result_get_data = $db->selectAll($query_get_data);
                     <a href="purchasing/purchasing.php">Purchasing</a>
                 </li>
                 <li class="">
-                    <a href="../bahanmentah.php"> Bahan Mentah</a>
+                    <a href="../bahanmentah.php"> Raw Materials</a>
                 </li>
                 <li>
-                    <a href="../bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="../bahansetengahjadi/bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="../bahanjadi/bahan_jadi.php">Finished Good Materials</a>
                 </li>
                 <li>
                     <a href="../index.php">COGS</a>
@@ -65,7 +65,7 @@ $result_get_data = $db->selectAll($query_get_data);
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5 pt-5">
             <h2 class="mb-4">List Purchasing</h2>
-            <a href="../bahanmentah/tambah_bahan_mentah.php"> <button class="btn btn-primary mb-lg-3">Tambah Item</button></a>
+            <a href="../bahanmentah/tambah_bahan_mentah.php"> <button class="btn btn-primary mb-lg-3">Upload PO</button></a>
             <div class="text-right"><a href="../public/template-raw-materals.xlsx">Download Template</a></div>
             <div class="last-update text-right">Last Update COGS : <span id="last-cogs"></span></div>
             <table class="table">

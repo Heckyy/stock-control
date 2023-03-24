@@ -42,13 +42,13 @@ $test_result = mysqli_fetch_assoc($result_data);
           <a href="../purchasing/purchasing.php"> Purchasing</a>
         </li>
         <li class="">
-          <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
+          <a href="<?= BASE_URL ?>../../../bahanmentah.php">Raw Materials</a>
         </li>
         <li>
-          <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+          <a href="<?= BASE_URL ?>../../bahan_setengah_jadi.php"> Semi Good Materials</a>
         </li>
         <li>
-          <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+          <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Finished Good Materials</a>
         </li>
         <li>
           <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
@@ -58,7 +58,7 @@ $test_result = mysqli_fetch_assoc($result_data);
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-      <h2 class="mb-4">Bahan Setengah Jadi</h2>
+      <h2 class="mb-4">Semi Good Materials</h2>
       <button class="btn btn-primary mb-3" id="buat-menu">Buat Bahan</button>
       <table class="table">
         <thead>
@@ -86,7 +86,7 @@ $test_result = mysqli_fetch_assoc($result_data);
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center" onclick="redirect(this)"><?= $rp->format($data['reference_unit']); ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['average_cost_unit']); ?></td>
               <td scope="row" onclick="redirect(this)" data-id="<?= $data['code_item']; ?>" class="text-center"><?= $rp->format($data['lastbuy_unit']); ?></td>
-              <td  class="text-center" align="center"><button onclick="deleteAll(this)" data-id = "<?=$data['code_item'];?>" style="background-color: transparent; border:none;"><i class="fa-solid fa-trash" ></i></button></td>
+              <td class="text-center" align="center"><button onclick="deleteAll(this)" data-id="<?= $data['code_item']; ?>" style="background-color: transparent; border:none;"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
           <?php $no++;
           endforeach; ?>

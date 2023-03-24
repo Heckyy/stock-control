@@ -40,7 +40,7 @@ require_once("baseUrl.php");
                     <a href="bahansetengahjadi/bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="bahanjadi/bahan_jadi.php"> Good Materials</a>
+                    <a href="bahanjadi/bahan_jadi.php"> Finished Good Materials</a>
                 </li>
                 <li>
                     <a href="index.php"> COGS</a>

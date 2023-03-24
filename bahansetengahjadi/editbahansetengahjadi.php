@@ -76,13 +76,13 @@ $get_data_bm = $db->selectAll($query_get_bm);
                     <a href="../purchasing/purchasing.php"> Purchasing</a>
                 </li>
                 <li class="">
-                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Bahan Mentah</a>
+                    <a href="<?= BASE_URL ?>../../../bahanmentah.php"> Raw Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="<?= BASE_URL ?>../../../bahanjadi/bahan_jadi.php"> Finished Good Materials</a>
                 </li>
                 <li>
                     <a href="<?= BASE_URL ?>../../../index.php"> COGS</a>
@@ -95,7 +95,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                 <div class="row justify-content-between align-items-center line">
                     <div class="col-auto">
                         <h4 class="app-card-title">
-                            Buat Barang Setengah Jadi
+                            Edit Semi Good Materials
                         </h4>
                     </div>
                 </div>
@@ -222,7 +222,7 @@ $get_data_bm = $db->selectAll($query_get_bm);
                                 <td class="text-center"><?= $rp->format($reference_cost); ?></td>
                                 <td class="text-center"><?= $rp->format($average_cost); ?></td>
                                 <td class="text-center"><?= $rp->format($lastbuy_cost); ?></td>
-                                <td  class="text-center" align="center"><button data-id = "<?=$data_bm['code_bahan'];?>" style="background-color: transparent; border:none;" onclick="deleteBahan(this)"><i class="fa-solid fa-trash"></i></button></td>
+                                <td class="text-center" align="center"><button data-id="<?= $data_bm['code_bahan']; ?>" style="background-color: transparent; border:none;" onclick="deleteBahan(this)"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
                         <?php $no++;
 
