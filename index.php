@@ -34,13 +34,13 @@ require_once("baseUrl.php");
                     <a href="purchasing/purchasing.php">Purchasing</a>
                 </li>
                 <li class="">
-                    <a href="bahanmentah.php"> Bahan Mentah</a>
+                    <a href="bahanmentah.php"> Raw Materials</a>
                 </li>
                 <li>
-                    <a href="bahansetengahjadi/bahan_setengah_jadi.php"> Bahan Setengah Jadi</a>
+                    <a href="bahansetengahjadi/bahan_setengah_jadi.php"> Semi Good Materials</a>
                 </li>
                 <li>
-                    <a href="bahanjadi/bahan_jadi.php"> Bahan Jadi</a>
+                    <a href="bahanjadi/bahan_jadi.php"> Good Materials</a>
                 </li>
                 <li>
                     <a href="index.php"> COGS</a>
@@ -49,8 +49,18 @@ require_once("baseUrl.php");
         </nav>
 
         <!-- Page Content  -->
+
         <div id="content" class="p-4 p-md-5 pt-5">
             <h2 class="mb-4">Costing</h2>
+            <div class="mb-4" style="display: flex;">
+                <h6 class="me-4">Type Of Inventory : </h6>
+                <select onchange="changeType()" name="type_inventory" id="type_inventory">
+                    <option value="all">All</option>
+                    <option value="Raw">Raw Material</option>
+                    <option value="Semi">Semi Good Materials</option>
+                    <option value="Finished">Finished Good Material </option>
+                </select>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
